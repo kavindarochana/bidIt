@@ -20,9 +20,17 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        // 'css/site.css',
+        'unishop/v3.0/template-2/css/vendor.min.css',
+        'unishop/v3.0/template-2/css/styles.min.css',
+        'unishop/v3.0/template-2/customizer/customizer.min.css'
     ];
     public $js = [
+        // JavaScript (jQuery) libraries, plugins and custom scripts
+        // 'unishop/v3.0/template-2/js/vendor.min.js',
+        // 'unishop/v3.0/template-2/js/scripts.min.js',
+        // // Customizer scripts
+        // 'unishop/v3.0/template-2/customizer/customizer.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
