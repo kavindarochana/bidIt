@@ -14,6 +14,7 @@ use Yii;
  * @property double $price
  * @property string $start_date
  * @property string $end_date
+ * @property int $status 0-queue,1-active,2-end,3-disable/pause
  * @property string $create_ts
  * @property string $update_ts
  *
@@ -39,6 +40,7 @@ class BidProduct extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['price'], 'number'],
             [['start_date', 'end_date', 'create_ts', 'update_ts'], 'safe'],
+            [['status'], 'integer'],
             [['name'], 'string', 'max' => 35],
             [['image'], 'string', 'max' => 40],
         ];
@@ -57,6 +59,7 @@ class BidProduct extends \yii\db\ActiveRecord
             'price' => 'Price',
             'start_date' => 'Start Date',
             'end_date' => 'End Date',
+            'status' => 'Status',
             'create_ts' => 'Create Ts',
             'update_ts' => 'Update Ts',
         ];

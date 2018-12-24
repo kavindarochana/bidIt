@@ -47,7 +47,7 @@
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
     <header class="navbar navbar-sticky">
       <!-- Site Branding-->
-      <div class="site-branding"><a class="site-logo hidden-xs-down" href="<?=Url::to(["site/index"])?>"><img src="unishop/v3.0/template-2/img/logo/logo.png" alt="Unishop"></a><a class="site-logo logo-sm hidden-sm-up" href="<?=Url::to(["site/index"])?>"><img src="unishop/v3.0/template-2/img/logo/logo-sm.png" alt="Unishop"></a>
+      <div class="site-branding"><a class="site-logo hidden-xs-down" href="<?=Url::to(["site/index"])?>"><img src="unishop/v3.0/template-2/img/logo/logo.png" alt="Unishop"></a><a class="site-logo logo-sm hidden-sm-up" href="<?=Url::to(["site/index"])?>"><img style = "max-width: 120px; max-height: 36px;" src="unishop/v3.0/template-2/img/logo/logo-sm.png" alt="Unishop"></a>
         <div class="lang-currency-switcher">
           <div class="lang-currency-toggle"><img src="unishop/v3.0/template-2/img/flags/GB.png" alt="English"><span>USD</span><i class="material-icons arrow_drop_down"></i>
           </div>
@@ -151,21 +151,21 @@
               <div class="entry">
                 <div class="entry-thumb"><a href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/widget/01.png" alt="Product"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html">Max <span class='text-highlighted'>Task Chair</span></a></h4><span class="entry-meta">$299.00</span>
+                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html">Max <span class='text-highlighted'>Task Chair</span></a></h4><span class="entry-meta">299.00LKR</span>
                 </div>
               </div>
               <!-- Entry-->
               <div class="entry">
                 <div class="entry-thumb"><a href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/widget/02.png" alt="Product"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html"><span class='text-highlighted'>Drawer</span> File Cabinet</a></h4><span class="entry-meta">$265.00</span>
+                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html"><span class='text-highlighted'>Drawer</span> File Cabinet</a></h4><span class="entry-meta">265.00LKR</span>
                 </div>
               </div>
               <!-- Entry-->
               <div class="entry">
                 <div class="entry-thumb"><a href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/widget/03.png" alt="Product"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html">Campfire <span class='text-highlighted'>Paper</span> Table</a></h4><span class="entry-meta">$570.00</span>
+                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html">Campfire <span class='text-highlighted'>Paper</span> Table</a></h4><span class="entry-meta">570.00LKR</span>
                 </div>
               </div>
             </div>
@@ -246,7 +246,7 @@
                     <td>
                       <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/01.jpg" alt="Product"></a>
                         <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">3-Drawer File Cabinet</a></h4><span><em>Price:</em> $257.00</span><span><em>Quantity:</em> 1</span>
+                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">3-Drawer File Cabinet</a></h4><span><em>Price:</em> 257.00LKR</span><span><em>Quantity:</em> 1</span>
                         </div>
                       </div>
                     </td>
@@ -256,7 +256,7 @@
                     <td>
                       <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/02.jpg" alt="Product"></a>
                         <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">Plastic Tissue Holder</a></h4><span><em>Price:</em> $76.40</span><span><em>Quantity:</em> 2</span>
+                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">Plastic Tissue Holder</a></h4><span><em>Price:</em> 76.40LKR</span><span><em>Quantity:</em> 2</span>
                         </div>
                       </div>
                     </td>
@@ -266,7 +266,7 @@
                     <td>
                       <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/03.jpg" alt="Product"></a>
                         <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">Campfire Paper Table</a></h4><span><em>Price:</em> $289.00</span><span><em>Quantity:</em> 1</span>
+                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">Campfire Paper Table</a></h4><span><em>Price:</em> 289.00LKR</span><span><em>Quantity:</em> 1</span>
                         </div>
                       </div>
                     </td>
@@ -277,7 +277,7 @@
             </div>
             <hr class="mb-3">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
-              <div class="pr-2 py-1 text-sm">Subtotal: <span class='text-dark text-medium'>$622.40</span></div><a class="btn btn-sm btn-success mb-0 mr-0" href="unishop/v3-0/template-2/checkout-address.html">Checkout</a>
+              <div class="pr-2 py-1 text-sm">Subtotal: <span class='text-dark text-medium'>622.40LKR</span></div><a class="btn btn-sm btn-success mb-0 mr-0" href="unishop/v3-0/template-2/checkout-address.html">Checkout</a>
             </div>
           </div>
         </div>
