@@ -2,6 +2,9 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\bootstrap\Modal;
+
 
 $this->title = 'My Yii Application';
 ?>
@@ -107,3 +110,55 @@ $this->title = 'My Yii Application';
       </div>
       <div class="text-center"><a class="btn btn-outline-secondary mb-0" href="unishop/v3-0/template-2/shop-categories.html">Load More</a></div>
     </section>
+
+    <!-- <section>
+      <button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#modalDefault">Default Modal</button>
+      <div class="modal fade" id="modalDefault" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Modal title</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-white btn-sm" type="button" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary btn-sm" type="button">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section> -->
+
+
+    <?php
+            
+          //   Modal::begin([
+              
+          //           'id'     => 'model',
+          //           'size'   => 'modal-dialog',
+          //           'footer' => '<div class="modal-footer">
+          //                         <button class="btn btn-white btn-sm" type="button" data-dismiss="modal">Close</button>
+          //                         <button class="btn btn-primary btn-sm" type="button">Save changes</button>
+          //                       </div>'
+          //   ]);
+            
+          //   echo '<div id="modelContent">
+          // </div>';
+
+          //   Modal::end();
+            ?>
+
+
+
+            <!-- <script>
+            $(function(){
+    $('#modelButton').click(function(){
+        $('.modal').modal('show')
+            .find('#modelContent')
+            .load($(this).attr('value'));console.log("a");
+    });
+});
+            </script> -->

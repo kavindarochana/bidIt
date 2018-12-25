@@ -34,6 +34,7 @@
     <!-- Google Tag Manager-->
     <!-- Modernizr-->
     <script src="unishop/v3.0/template-2/js/modernizr.min.js"></script>
+    <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script>
 </head>
 <body>
 
@@ -87,7 +88,7 @@
       </nav>
       <!-- Toolbar-->
       <div class="toolbar">
-        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span class="count">3</span></i></a></div>
+        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span class="count"><?=$this->params['user']->bid_balance;?></span></i></a></div>
         <!-- Toolbar Dropdown-->
         <div class="toolbar-dropdown">
           <!-- Mobile Menu Section-->
@@ -191,24 +192,23 @@
           <!-- Account Section-->
           <div class="toolbar-section" id="account">
             <ul class="nav nav-tabs nav-justified" role="tablist">
-              <li class="nav-item"><a class="nav-link active" href="#login" data-toggle="tab" role="tab">Log In</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#myAccount" data-toggle="tab" role="tab">My Account</a></li>
               <li class="nav-item"><a class="nav-link" href="#signup" data-toggle="tab" role="tab">Sign Up</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane fade show active" id="login" role="tabpanel">
-                <form autocomplete="off" id="login-form">
-                  <div class="form-group input-group">
-                    <input class="form-control" type="email" placeholder="Email" required><span class="input-group-addon"><i class="material-icons mail"></i></span>
-                  </div>
-                  <div class="form-group input-group">
-                    <input class="form-control" type="password" placeholder="Password" required><span class="input-group-addon"><i class="material-icons lock"></i></span>
-                  </div>
-                  <div class="custom-control custom-checkbox form-group">
-                    <input class="custom-control-input" type="checkbox" id="logged" checked>
-                    <label class="custom-control-label" for="logged">Keep me logged in</label>
-                  </div>
-                  <button class="btn btn-primary btn-block" type="submit">Log In</button>
-                </form>
+              <div class="tab-pane fade show active" id="myAccount" role="tabpanel">
+                
+              <div class="col-md-6">
+                <ul class="list-unstyled text-sm mb-4">
+                  <li><strong>MSIDN:</strong>  <?=$this->params['user']->cust->msisdn;?></li>
+                  <li><strong>Name:</strong>  <?=$this->params['user']->cust->name;?></li>
+                  <li><strong>Balance:</strong>  <?=$this->params['user']->bid_balance;?> bids</li>
+                </ul>
+              </div>
+                 
+                  
+                  
+                
               </div>
               <div class="tab-pane fade" id="signup" role="tabpanel">
                 <form autocomplete="off" id="signup-form">
@@ -237,7 +237,7 @@
                 <thead>
                   <tr>
                     <th colspan="2">
-                      <div class="d-flex justify-content-between align-items-center">Products<a class="navi-link text-uppercase" href="unishop/v3-0/template-2/cart.html"><span class="text-xxs">Expand Cart</span><i class="material-icons keyboard_arrow_right"></i></a></div>
+                      <div class="d-flex justify-content-between align-items-center">Packages<a class="navi-link text-uppercase" href="unishop/v3-0/template-2/cart.html"></a></div>
                     </th>
                   </tr>
                 </thead>
@@ -246,39 +246,39 @@
                     <td>
                       <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/01.jpg" alt="Product"></a>
                         <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">3-Drawer File Cabinet</a></h4><span><em>Price:</em> 257.00LKR</span><span><em>Quantity:</em> 1</span>
+                        <i class="material-icons favorite_border"></i> <h4 class="product-title"><a data-toggle="modal" data-target="#modalDefault">3-Pack Saver</a></h4><span><em>Price:</em> 20.00LKR</span><span><em>Bids:</em> 3</span>
                         </div>
                       </div>
                     </td>
-                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons icon_close"></i></a></td>
+                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
                   </tr>
                   <tr>
                     <td>
                       <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/02.jpg" alt="Product"></a>
                         <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">Plastic Tissue Holder</a></h4><span><em>Price:</em> 76.40LKR</span><span><em>Quantity:</em> 2</span>
+                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">10-Pack Saver</a></h4><span><em>Price:</em> 65.00LKR</span><span><em>Bids:</em> 10</span>
                         </div>
                       </div>
                     </td>
-                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons icon_close"></i></a></td>
+                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
                   </tr>
                   <tr>
                     <td>
                       <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/03.jpg" alt="Product"></a>
                         <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">Campfire Paper Table</a></h4><span><em>Price:</em> 289.00LKR</span><span><em>Quantity:</em> 1</span>
+                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">20-Pack Saver</a></h4><span><em>Price:</em> 120.00LKR</span><span><em>Bids:</em> 20</span>
                         </div>
                       </div>
                     </td>
-                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons icon_close"></i></a></td>
+                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <hr class="mb-3">
+            <!-- <hr class="mb-3">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
               <div class="pr-2 py-1 text-sm">Subtotal: <span class='text-dark text-medium'>622.40LKR</span></div><a class="btn btn-sm btn-success mb-0 mr-0" href="unishop/v3-0/template-2/checkout-address.html">Checkout</a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
