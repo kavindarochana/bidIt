@@ -35,6 +35,18 @@
     <!-- Modernizr-->
     <script src="unishop/v3.0/template-2/js/modernizr.min.js"></script>
     <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script>
+    <style>
+    div#w0-success-0 {
+      opacity: 1 !important;
+    }
+    .toast {
+      opacity: 1 !important;
+    }
+
+    #toast-container > div {
+      opacity: 1 !important; 
+    }
+    </style>
 </head>
 <body>
 
@@ -199,11 +211,21 @@
               <div class="tab-pane fade show active" id="myAccount" role="tabpanel">
                 
               <div class="col-md-6">
-                <ul class="list-unstyled text-sm mb-4">
-                  <li><strong>MSIDN:</strong>  <?=$this->params['user']->cust->msisdn;?></li>
-                  <li><strong>Name:</strong>  <?=$this->params['user']->cust->name;?></li>
-                  <li><strong>Balance:</strong>  <?=$this->params['user']->bid_balance;?> bids</li>
-                </ul>
+                <li class="media mb-4"><img class="d-flex rounded-circle align-self-start mr-3" src="<?= Url::base(true) . $this->params['user']->cust->propic?>" width="120" alt="Media">
+                  <div class="media-body">
+                    <ul class="list-unstyled text-sm mb-4">
+                      <li><strong>MSIDN:</strong>  <?=$this->params['user']->cust->msisdn;?></li>
+                      <li><strong>Name:</strong>  <?=$this->params['user']->cust->name;?></li>
+                      <li><strong>NIC:</strong>  <?=$this->params['user']->cust->nic;?></li>
+                      <li><strong>Balance:</strong>  <?=$this->params['user']->bid_balance;?> bids</li>
+                      <li><strong>Status:</strong>  <?= $this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' .  Html::a('Deactivate', 
+                      ['site/unsubscribe', 'uid' =>$this->params['user']->cust->id, 'msisdn'=>$this->params['user']->cust->msisdn], ['class' => 'text-danger']) : 
+                      '<span class="text-danger">Unsubscribe</span> ' . Html::a('Activate', 
+                      ['site/subscribe', 'uid' =>$this->params['user']->cust->id, 'msisdn'=>$this->params['user']->cust->msisdn], ['class' => 'text-success']) ;?> </li>
+                    
+                    </ul>
+                  </div>
+                </li>
               </div>
                  
                   

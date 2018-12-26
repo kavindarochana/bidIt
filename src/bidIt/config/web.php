@@ -51,6 +51,7 @@ $config = [
             ],
         ],
         'db' => $db,
+        
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -61,7 +62,13 @@ $config = [
         */
     ],
     'params' => $params,
+    'modules' => [
+        'noty' => [
+            'class' => 'lo\modules\noty\Module',
+        ],
+    ],
 ];
+
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

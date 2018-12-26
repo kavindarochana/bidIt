@@ -7,7 +7,13 @@ use yii\bootstrap\Modal;
 
 
 $this->title = 'My Yii Application';
+
+// if (Yii::$app->session->hasFlash('success'))
+// echo Yii::$app->session->getFlash('success');
+
 ?>
+
+
 <section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
       <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>
       <div class="row">

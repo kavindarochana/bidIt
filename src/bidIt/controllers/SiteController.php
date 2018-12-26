@@ -2,16 +2,20 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\BidProduct;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\User;
 use app\models\Wallet;
-use Yii;
+use app\models\Subscriber;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\web\ForbiddenHttpException;
+
+use app\controllers\BidAuthController;
 
 class SiteController extends Controller
 {
@@ -66,9 +70,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $product = BidProduct::findOne(1);
-        $user = Wallet::findOne(1);
-        $this->view->params['user'] = $user;
+        $this->authRequest();
+        $user = $this->view->params['user'];
+        $product = $this->view->params['products'];
         return $this->render('index', ['products' => $product, 'balance' => $user->bid_balance]);
     }
 
@@ -267,6 +271,52 @@ class SiteController extends Controller
         //         'model' => $model,
         //     ]);
         // }
+    }
+
+    public function actionUnsubscribe()
+    {
+        $this->authRequest();
+        $subscriber = Subscriber::findOne(['id' => $_GET['uid'],  'msisdn' => $_GET['msisdn']]);
+        $subscriber->status = 0;
+        
+        if($subscriber->save()) {
+            $this->authRequest();
+            Yii::$app->session->setFlash('success', 'You have successfully <span class="text-danger">unsubscribed</span> from this service.');
+        }
+        return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+    }
+
+    public function actionSubscribe()
+    {
+        $this->authRequest();
+        $subscriber = Subscriber::findOne(['id' => $_GET['uid'],  'msisdn' => $_GET['msisdn']]);
+        $subscriber->status = 1;
+        
+        if($subscriber->save()) {
+            $this->authRequest();
+            Yii::$app->session->setFlash('success', 'You have been successfully <span class="text-info">subscribed.</span>');
+        }
+        $user = $this->view->params['user'];
+        return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+    }
+
+
+    private function authRequest($msidn = null)
+    {
+        $msisdn = 94717071207;
+
+        if ($subscriber = Subscriber::findOne(['msisdn' => $msisdn])) {
+            $user = Wallet::findOne(['cust_id' => $subscriber->id]);
+            $product = BidProduct::findOne(1);
+            $this->view->params['user'] = $user;
+            $this->view->params['products'] = $product;
+            return;
+        }
+        
+        throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        
+
+
     }
 	
 }
