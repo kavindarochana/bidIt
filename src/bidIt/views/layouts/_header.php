@@ -35,7 +35,7 @@
     <!-- Modernizr-->
     <script src="unishop/v3.0/template-2/js/modernizr.min.js"></script>
     <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script>
-    <style>
+    <!-- <style>
     div#w0-success-0 {
       opacity: 1 !important;
     }
@@ -46,7 +46,10 @@
     #toast-container > div {
       opacity: 1 !important; 
     }
-    </style>
+    div#w0-success-0 {
+    bottom: -9px;
+}
+    </style> -->
 </head>
 <body>
 

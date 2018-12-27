@@ -62,11 +62,6 @@ $config = [
         */
     ],
     'params' => $params,
-    'modules' => [
-        'noty' => [
-            'class' => 'lo\modules\noty\Module',
-        ],
-    ],
 ];
 
 
