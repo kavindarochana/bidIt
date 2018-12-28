@@ -2,20 +2,18 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\BidProduct;
 use app\models\ContactForm;
 use app\models\LoginForm;
+use app\models\Subscriber;
 use app\models\User;
 use app\models\Wallet;
-use app\models\Subscriber;
+use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\web\ForbiddenHttpException;
-
-use app\controllers\BidAuthController;
+use yii\web\Response;
 
 class SiteController extends Controller
 {
@@ -23,7 +21,7 @@ class SiteController extends Controller
      * {@inheritdoc}
      */
 
-    public $userObj = 0 ;
+    public $userObj = 0;
     public function behaviors()
     {
         return [
@@ -140,27 +138,26 @@ class SiteController extends Controller
 
     public function actionAbc()
     {
-       
 
-        $code = @$_POST['code']=1;
-	    $color = @$_POST['color']=2;
-     
+        $code = @$_POST['code'] = 1;
+        $color = @$_POST['color'] = 2;
+
         // $lottery = TblLottery::find()
         // ->where(['code'=>$code])
         // ->one();
 
         $days = [
-            "1"=>"Monday",
-            "2"=>"Tuesday",
-            "3"=>"Wednesday",
-            "4"=>"Thursday",
-            "5"=>"Friday",
-            "6"=>"Saturday",
-            "7"=>"Sunday",
+            "1" => "Monday",
+            "2" => "Tuesday",
+            "3" => "Wednesday",
+            "4" => "Thursday",
+            "5" => "Friday",
+            "6" => "Saturday",
+            "7" => "Sunday",
         ];
 
         // $dates = (array)json_decode($lottery->date_values);
-        
+
         // $strDays = "";
         // for ($x = 0; $x < count($dates); $x++) {
         //     if($x == (count($dates)-1) ){
@@ -168,7 +165,7 @@ class SiteController extends Controller
         //     }else{
         //         $strDays .= $days[$dates[$x]].',';
         //     }
-        // } 
+        // }
 
         echo '<div class="modal-dialog">
         <div class="modal-content c-square">
@@ -178,7 +175,7 @@ class SiteController extends Controller
             </div>
             <div class="modal-body">
                 <h5 class="modal-title" id="myModalLabel">How many tickets do you want to buy for a draw?</h5>
-                
+
                 <div class="c-content-panel">
 
                     <div class="buy-table-wrapper">
@@ -243,7 +240,7 @@ class SiteController extends Controller
                 <p style="color:#5c6873; text-align:center; font-size:16px;">Draws available on 1wq</p>
                 <p style="color:#6d46ca; text-align:center; font-size:11px;">* Rs.4 telecom fee + tax will apply for each ticket</p>
             </div>
-            <div class="modal-footer">						
+            <div class="modal-footer">
                 <button style="border-color:sas; color:sa"   onclick="submitBuyticket()" type="button" class="btn c-buy-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase">Buy</button>
             </div>
         </div>
@@ -252,19 +249,18 @@ class SiteController extends Controller
         <input type="hidden" id="ticket_name" name="ticket_code" value="as" />
         <!-- /.modal-content -->
     </div>';
-    die;
+        die;
     }
-
 
     public function actionCreate()
     {
 
         print_r(Yii::$app->request->post());
-         echo 'aaaa';
+        echo 'aaaa';
         // $model = new BidProduct();
- 
+
         // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
+
         //     return $this->redirect(['index']);
         // } else {
         //     return $this->renderAjax('create', [
@@ -276,30 +272,29 @@ class SiteController extends Controller
     public function actionUnsubscribe()
     {
         $this->authRequest();
-        $subscriber = Subscriber::findOne(['id' => $_GET['uid'],  'msisdn' => $_GET['msisdn']]);
+        $subscriber = Subscriber::findOne(['id' => $_GET['uid'], 'msisdn' => $_GET['msisdn']]);
         $subscriber->status = 0;
-        
-        if($subscriber->save()) {
+
+        if ($subscriber->save()) {
             $this->authRequest();
-            Yii::$app->session->setFlash('success', 'You have successfully <span class="text-danger">unsubscribed</span> from this service.');
+            $msg = 'You have successfully unsubscribed from BidIt.';
         }
-        return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+        return $this->render('index', ['products' => $this->view->params['products'], 'message' => ['success', $msg], 'balance' => $this->view->params['user']->bid_balance]);
     }
 
     public function actionSubscribe()
     {
         $this->authRequest();
-        $subscriber = Subscriber::findOne(['id' => $_GET['uid'],  'msisdn' => $_GET['msisdn']]);
+        $subscriber = Subscriber::findOne(['id' => $_GET['uid'], 'msisdn' => $_GET['msisdn']]);
         $subscriber->status = 1;
-        
-        if($subscriber->save()) {
+
+        if ($subscriber->save()) {
             $this->authRequest();
-            Yii::$app->session->setFlash('success', 'You have been successfully <span class="text-info">subscribed.</span>');
+            $msg = 'You have been successfully subscribed for BidIt.';
         }
         $user = $this->view->params['user'];
-        return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+        return $this->render('index', ['products' => $this->view->params['products'], 'message' => ['success', $msg], 'balance' => $this->view->params['user']->bid_balance]);
     }
-
 
     private function authRequest($msidn = null)
     {
@@ -312,11 +307,9 @@ class SiteController extends Controller
             $this->view->params['products'] = $product;
             return;
         }
-        
-        throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-        
 
+        throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
 
     }
-	
+
 }

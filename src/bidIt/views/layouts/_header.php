@@ -1,17 +1,17 @@
-<?php 
-  use yii\helpers\Html;
-  use yii\helpers\Url;
+<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?=Yii::$app->language?>">
 <head>
-    <meta charset="<?= Yii::$app->charset ?>">
+    <meta charset="<?=Yii::$app->charset?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
+    <?=Html::csrfMetaTags()?>
+    <title><?=Html::encode($this->title)?></title>
+    <?php $this->head()?>
     <!-- SEO Meta Tags-->
     <meta name="description" content="Unishop - Universal E-Commerce Template">
     <meta name="keywords" content="shop, e-commerce, modern, flat style, responsive, online store, business, mobile, blog, bootstrap 4, html5, css3, jquery, js, gallery, slider, touch, creative, clean">
@@ -34,7 +34,15 @@
     <!-- Google Tag Manager-->
     <!-- Modernizr-->
     <script src="unishop/v3.0/template-2/js/modernizr.min.js"></script>
-    <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script>
+    <!-- <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <script src="js/jquery.growl.js" type="text/javascript"></script>
+    <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery.alertable.js"></script>
+    <link href="css/jquery.alertable.css" rel="stylesheet">
+
+
+
     <!-- <style>
     div#w0-success-0 {
       opacity: 1 !important;
@@ -44,7 +52,7 @@
     }
 
     #toast-container > div {
-      opacity: 1 !important; 
+      opacity: 1 !important;
     }
     div#w0-success-0 {
     bottom: -9px;
@@ -86,7 +94,7 @@
               </li>
             </ul>
           </li>
-          
+
           <li><a href="unishop/v3-0/template-2/account-orders.html"><span>Account</span></a>
             <ul class="sub-menu">
                 <li><a href="unishop/v3-0/template-2/account-orders.html">Orders List</a></li>
@@ -98,7 +106,7 @@
                 <li><a href="unishop/v3-0/template-2/account-password-recovery.html">Password Recovery</a></li>
             </ul>
           </li>
-          
+
         </ul>
       </nav>
       <!-- Toolbar-->
@@ -112,7 +120,7 @@
             <nav class="slideable-menu mt-4">
               <ul class="menu">
                 <li class=""><span><a href="<?=Url::to(["site/index"])?>"><span>Home</span></a><span class="sub-menu-toggle"></span></span>
-                  
+
                 </li>
                 <li class="has-children"><span><a href="<?=Url::to(["site/about"])?>"><span>Shop</span></a><span class="sub-menu-toggle"></span></span>
                   <ul class="slideable-submenu">
@@ -212,28 +220,28 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="myAccount" role="tabpanel">
-                
+
               <div class="col-md-6">
-                <li class="media mb-4"><img class="d-flex rounded-circle align-self-start mr-3" src="<?= Url::base(true) . $this->params['user']->cust->propic?>" width="120" alt="Media">
+                <li class="media mb-4"><img class="d-flex rounded-circle align-self-start mr-3" src="<?=Url::base(true) . $this->params['user']->cust->propic?>" width="120" alt="Media">
                   <div class="media-body">
                     <ul class="list-unstyled text-sm mb-4">
                       <li><strong>MSIDN:</strong>  <?=$this->params['user']->cust->msisdn;?></li>
                       <li><strong>Name:</strong>  <?=$this->params['user']->cust->name;?></li>
                       <li><strong>NIC:</strong>  <?=$this->params['user']->cust->nic;?></li>
                       <li><strong>Balance:</strong>  <?=$this->params['user']->bid_balance;?> bids</li>
-                      <li><strong>Status:</strong>  <?= $this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' .  Html::a('Deactivate', 
-                      ['site/unsubscribe', 'uid' =>$this->params['user']->cust->id, 'msisdn'=>$this->params['user']->cust->msisdn], ['class' => 'text-danger']) : 
-                      '<span class="text-danger">Unsubscribe</span> ' . Html::a('Activate', 
-                      ['site/subscribe', 'uid' =>$this->params['user']->cust->id, 'msisdn'=>$this->params['user']->cust->msisdn], ['class' => 'text-success']) ;?> </li>
-                    
+                      <li><strong>Status:</strong>  <?=$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
+    ['site/unsubscribe', 'uid' => $this->params['user']->cust->id, 'msisdn' => $this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
+'<span class="text-danger">Unsubscribe</span> ' . Html::a('Activate',
+    ['site/subscribe', 'uid' => $this->params['user']->cust->id, 'msisdn' => $this->params['user']->cust->msisdn], ['class' => 'text-success']);?> </li>
+
                     </ul>
                   </div>
                 </li>
               </div>
-                 
-                  
-                  
-                
+
+
+
+
               </div>
               <div class="tab-pane fade" id="signup" role="tabpanel">
                 <form autocomplete="off" id="signup-form">

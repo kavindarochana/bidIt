@@ -11,8 +11,31 @@ $this->title = 'My Yii Application';
 // if (Yii::$app->session->hasFlash('success'))
 // echo Yii::$app->session->getFlash('success');
 
+
+  if (@$message[0] == 'success') {
+    echo "<script type=\"text/javascript\">
+              $.growl.notice({ title: \"\", message: \"$message[1]\" });
+          </script>";
+  }
+
+  if (@$message[0] == 'error') {
+    echo "<script type=\"text/javascript\">
+              $.growl.error({ title: \"\", message: \"$message[1]\" });
+          </script>";
+  }
+// $.growl.error({ message: "The kitten is attacking!" });
+// $.growl.notice({ message: "The kitten is cute!" });
+// $.growl.warning({ message: "The kitten is ugly!" });
 ?>
 
+<!-- <script>
+$.alertable.confirm('Are you sure?').then(function() {
+  $.alertable.alert('You Just Clicked OK!');
+}, function() {
+  $.alertable.alert('You Just Clicked Cancel!');     
+});
+
+</script> -->
 
 <section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
       <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>

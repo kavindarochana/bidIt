@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
         // 'css/site.css',
         'unishop/v3.0/template-2/css/vendor.min.css',
         'unishop/v3.0/template-2/css/styles.min.css',
-        'unishop/v3.0/template-2/customizer/customizer.min.css'
+        'unishop/v3.0/template-2/customizer/customizer.min.css',
     ];
     public $js = [
         // JavaScript (jQuery) libraries, plugins and custom scripts
