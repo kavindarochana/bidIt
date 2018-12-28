@@ -28,14 +28,22 @@ $this->title = 'My Yii Application';
 // $.growl.warning({ message: "The kitten is ugly!" });
 ?>
 
-<!-- <script>
-$.alertable.confirm('Are you sure?').then(function() {
-  $.alertable.alert('You Just Clicked OK!');
-}, function() {
-  $.alertable.alert('You Just Clicked Cancel!');     
+<a class="twitter" data-title="Goto twitter?" href="">Goto twitter</a>
+<?php $a='aaaa';
+echo '
+<script>
+$(\'a.twitter\').confirm({
+    content: "'.$a.'}",
 });
-
-</script> -->
+$(\'a.twitter\').confirm({
+    buttons: {
+        hey: function(){console.log("aaaa");
+            
+        }
+    }
+});
+</script>';
+?>
 
 <section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
       <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>

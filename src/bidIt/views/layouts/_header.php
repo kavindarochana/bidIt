@@ -38,8 +38,10 @@ use yii\helpers\Url;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
     <script src="js/jquery.growl.js" type="text/javascript"></script>
     <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
-    <script src="js/jquery.alertable.js"></script>
-    <link href="css/jquery.alertable.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
 
 
 
