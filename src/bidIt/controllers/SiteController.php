@@ -61,6 +61,11 @@ class SiteController extends Controller
         ];
     }
 
+    // public function beforeAction($action) {
+    //     $this->enableCsrfValidation = false;
+    //     return parent::beforeAction($action);
+    // }
+
     /**
      * Displays homepage.
      *
@@ -305,11 +310,21 @@ class SiteController extends Controller
             $product = BidProduct::findOne(1);
             $this->view->params['user'] = $user;
             $this->view->params['products'] = $product;
-            return;
+            return $user;
         }
 
         throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
 
+    }
+
+    public function actionAxz()
+    {
+        $user = $this->authRequest();
+        $msg = 'You have successfully unsubscribed from BidIt.';
+        Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode(['success', $msg]),2);
+
+        return $this->render('index', ['products' => $this->view->params['products'], 'message' => ['success', $msg], 'balance' => $this->view->params['user']->bid_balance]);
+  
     }
 
 }

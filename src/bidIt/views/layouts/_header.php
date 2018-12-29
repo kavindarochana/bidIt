@@ -40,7 +40,7 @@ use yii\helpers\Url;
     <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 
 
@@ -62,7 +62,11 @@ use yii\helpers\Url;
     </style> -->
 </head>
 <body>
-
+<script>
+  function test() {
+    console.log('aaaa');
+  }
+</script>
 
 <noscript>
       <iframe src="index.html" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
@@ -299,7 +303,7 @@ use yii\helpers\Url;
                   </tr>
                   <tr>
                     <td>
-                      <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/03.jpg" alt="Product"></a>
+                      <div class="product-item"><a onlick = "test()" class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/03.jpg" alt="Product"></a>
                         <div class="product-info">
                           <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">20-Pack Saver</a></h4><span><em>Price:</em> 120.00LKR</span><span><em>Bids:</em> 20</span>
                         </div>

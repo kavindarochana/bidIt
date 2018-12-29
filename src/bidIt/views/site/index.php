@@ -2,48 +2,168 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\bootstrap\Modal;
-
 
 $this->title = 'My Yii Application';
 
 // if (Yii::$app->session->hasFlash('success'))
 // echo Yii::$app->session->getFlash('success');
+$msg =  json_decode(Yii::$app->cache->get($this->params['user']->cust->id.'notice_message'));
 
+$message = ($msg == null ? @$message:$msg);
 
-  if (@$message[0] == 'success') {
+if (@$message[0] == 'success') {
+ 
     echo "<script type=\"text/javascript\">
               $.growl.notice({ title: \"\", message: \"$message[1]\" });
           </script>";
-  }
+          
+          
+}
 
-  if (@$message[0] == 'error') {
+if (@$message[0] == 'error') {
     echo "<script type=\"text/javascript\">
               $.growl.error({ title: \"\", message: \"$message[1]\" });
           </script>";
-  }
+}
+
+// Yii::$app->session->set('notice_message', null);
 // $.growl.error({ message: "The kitten is attacking!" });
 // $.growl.notice({ message: "The kitten is cute!" });
 // $.growl.warning({ message: "The kitten is ugly!" });
 ?>
 
-<a class="twitter" data-title="Goto twitter?" href="">Goto twitter</a>
-<?php $a='aaaa';
+<script>
+$(
+
+".screenshot-link").click(function () {
+var site = $(this).attr("site");
+var num = $(this).attr("num");
+// $.post(
+
+// "/Development/Main/Screenshot",
+// {
+
+// site: site, num: num }
+// );
+$.confirm({
+
+  content: x,
+});
+$('a.twitter').confirm({
+  buttons: {
+      hey: function(){
+         // location.href = this.$target.attr(\'href\');
+      }
+  }
+});
+
+console.log(num);
+});
+</script>
+
+<?php $a = 'aaaa';
 echo '
 <script>
+
+
+var x = $("#er").data(\'id\');
+console.log(x);console.log(x);
+
 $(\'a.twitter\').confirm({
-    content: "'.$a.'}",
+  content: $("#er").data(\'id\'),
+  buttons: {
+      hey: function(){
+          location.href = this.$target.attr(\'href\');
+      }
+  }
 });
-$(\'a.twitter\').confirm({
-    buttons: {
-        hey: function(){console.log("aaaa");
-            
-        }
-    }
-});
+
+function openDialog() {
+  console.log(2131);
+}
 </script>';
+
 ?>
+
+<a href="#gardenImage" data-name="xcv" data-id="http://localhost/bidIt/bid/data/images/bidproducts/iphonex.jpeg" class="openImageDialog thumbnail" data-toggle="modal">
+    click
+</a>
+
+<script type="text/javascript">
+var ul = "'" + <?php Url::base(true); ?> + "'";
+console.log(ul);
+$(document).on("click", ".openImageDialog", function () {
+    console.log('Ok');
+    var myImageId = $(this).data('id');
+    var myTxt = $(this).data('name');
+    console.log(myTxt);
+    $(".modal-body #myImage").attr("src", myImageId);
+    $('.modal-body #aaaqqq').html("1aaaaa");
+
+    
+    $('#aqw').on('click', function (event) {
+      
+      $.ajax({
+       url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=site/axz' ?>',
+       type: 'post',
+       data: {
+                 searchname:'a', 
+                 searchby:'b' , 
+                 _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+             },
+       success: function (data) {
+          console.log('a');
+          window.location='index.php';
+
+          //this.redirect;
+       }
+  });
+});
+    
+});
+</script>
+
+<div class="modal fade" id="gardenImage" tabindex="-1" role="dialog" aria-labelledby="gardenImageLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="myImage" class="img-responsive" src="" alt="">
+                <p id=''></p>
+                <span id = "aaaqqq" class="input-number-increment" ></span>
+                <!-- <input type="text" class="input-xlarge" id="date" name="date" /> -->
+                    
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="button" id = "aqw" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 
 <section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
       <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>
@@ -54,8 +174,8 @@ $(\'a.twitter\').confirm({
           <div class="card-body text-center"><span class="product-badge text-danger">Live</span>
             <h4 style = "margin-bottom: 15px;  margin-top: -20px;"><?=$products->name;?><!-- <span class='text-danger'>-30%</span> --></h4>
             <div style = "margin-top: -0.2rem !important;" class="mt-4">
-              <span class="days_ref">Expire - <span class= "text-success"><?= date('M d Y H:i', strtotime($products->end_date))?></span></span>
-                <div class="countdown countdown-alt" data-date-time="<?= date('m/d/Y H:i:s', strtotime($products->end_date)); ?>">
+              <span class="days_ref">Expire - <span class= "text-success"><?=date('M d Y H:i', strtotime($products->end_date))?></span></span>
+                <div class="countdown countdown-alt" data-date-time="<?=date('m/d/Y H:i:s', strtotime($products->end_date));?>">
                   <div class="item">
                     <div class="days">00</div><span class="days_ref">Days</span>
                   </div>
@@ -73,7 +193,7 @@ $(\'a.twitter\').confirm({
               <a class="d-inline-block" href="unishop/v3-0/template-2/shop-single.html"><img style = "max-width:100%;" src="<?php echo Url::base(true) . $products->image; ?>" alt="Special Offer"></a>
               <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="unishop/v3-0/template-2/shop-single.html"></a></h3>
               <span class="h4 text-danger"><?=$products->price?> LKR</span>
-              <div style = "margin-left: 14%; margin-top: 10px;" class = "row"> 
+              <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
                 <input style = "width:180px;"class="form-control form-control-pill form-control-sm" type="text" id="small-pill-input" placeholder="Place your bid">
                 <button style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
               </div>
@@ -171,22 +291,22 @@ $(\'a.twitter\').confirm({
 
 
     <?php
-            
-          //   Modal::begin([
-              
-          //           'id'     => 'model',
-          //           'size'   => 'modal-dialog',
-          //           'footer' => '<div class="modal-footer">
-          //                         <button class="btn btn-white btn-sm" type="button" data-dismiss="modal">Close</button>
-          //                         <button class="btn btn-primary btn-sm" type="button">Save changes</button>
-          //                       </div>'
-          //   ]);
-            
-          //   echo '<div id="modelContent">
-          // </div>';
 
-          //   Modal::end();
-            ?>
+//   Modal::begin([
+
+//           'id'     => 'model',
+//           'size'   => 'modal-dialog',
+//           'footer' => '<div class="modal-footer">
+//                         <button class="btn btn-white btn-sm" type="button" data-dismiss="modal">Close</button>
+//                         <button class="btn btn-primary btn-sm" type="button">Save changes</button>
+//                       </div>'
+//   ]);
+
+//   echo '<div id="modelContent">
+// </div>';
+
+//   Modal::end();
+?>
 
 
 
