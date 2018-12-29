@@ -5,6 +5,8 @@ use yii\helpers\Url;
 
 $this->title = 'My Yii Application';
 
+// print_r(apache_request_headers());
+// api_log();exit;
 // if (Yii::$app->session->hasFlash('success'))
 // echo Yii::$app->session->getFlash('success');
 $msg =  json_decode(Yii::$app->cache->get($this->params['user']->cust->id.'notice_message'));
@@ -16,14 +18,24 @@ if (@$message[0] == 'success') {
     echo "<script type=\"text/javascript\">
               $.growl.notice({ title: \"\", message: \"$message[1]\" });
           </script>";
-          
-          
 }
 
 if (@$message[0] == 'error') {
     echo "<script type=\"text/javascript\">
               $.growl.error({ title: \"\", message: \"$message[1]\" });
           </script>";
+}
+
+if (@$message[0] == 'alert') {
+  echo "<script type=\"text/javascript\">
+            $.growl({ title: \"\", message: \"$message[1]\" });
+        </script>";
+}
+
+if (@$message[0] == 'warning') {
+  echo "<script type=\"text/javascript\">
+            $.growl.warning({ title: \"\", message: \"$message[1]\" });
+        </script>";
 }
 
 // Yii::$app->session->set('notice_message', null);
@@ -85,61 +97,7 @@ function openDialog() {
 
 ?>
 
-<a href="#gardenImage" data-name="xcv" data-id="http://localhost/bidIt/bid/data/images/bidproducts/iphonex.jpeg" class="openImageDialog thumbnail" data-toggle="modal">
-    click
-</a>
 
-<script type="text/javascript">
-var ul = "'" + <?php Url::base(true); ?> + "'";
-console.log(ul);
-$(document).on("click", ".openImageDialog", function () {
-    console.log('Ok');
-    var myImageId = $(this).data('id');
-    var myTxt = $(this).data('name');
-    console.log(myTxt);
-    $(".modal-body #myImage").attr("src", myImageId);
-    $('.modal-body #aaaqqq').html("1aaaaa");
-
-    
-    $('#aqw').on('click', function (event) {
-      
-      $.ajax({
-       url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=site/axz' ?>',
-       type: 'post',
-       data: {
-                 searchname:'a', 
-                 searchby:'b' , 
-                 _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
-             },
-       success: function (data) {
-          console.log('a');
-          window.location='index.php';
-
-          //this.redirect;
-       }
-  });
-});
-    
-});
-</script>
-
-<div class="modal fade" id="gardenImage" tabindex="-1" role="dialog" aria-labelledby="gardenImageLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <img id="myImage" class="img-responsive" src="" alt="">
-                <p id=''></p>
-                <span id = "aaaqqq" class="input-number-increment" ></span>
-                <!-- <input type="text" class="input-xlarge" id="date" name="date" /> -->
-                    
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-             <button type="button" id = "aqw" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 

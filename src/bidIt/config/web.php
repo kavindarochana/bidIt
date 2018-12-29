@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+require_once( __DIR__  . '/core_utils.php');
 
 $config = [
     'id' => 'basic',

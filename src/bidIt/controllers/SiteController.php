@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\BidPackages;
 use app\models\BidProduct;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\Subscriber;
 use app\models\User;
 use app\models\Wallet;
+use app\models\BidTransaction;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -303,13 +305,15 @@ class SiteController extends Controller
 
     private function authRequest($msidn = null)
     {
-        $msisdn = 94717071207;
+        $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
 
-        if ($subscriber = Subscriber::findOne(['msisdn' => $msisdn])) {
+        if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
             $product = BidProduct::findOne(1);
+            $packages = BidPackages::find(['status = 1'])->all();
             $this->view->params['user'] = $user;
             $this->view->params['products'] = $product;
+            $this->view->params['packs'] = $packages;
             return $user;
         }
 
@@ -317,14 +321,77 @@ class SiteController extends Controller
 
     }
 
-    public function actionAxz()
+    public function actionPurchase()
     {
         $user = $this->authRequest();
-        $msg = 'You have successfully unsubscribed from BidIt.';
-        Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode(['success', $msg]),2);
+        $msg = ['error', 'Your request can not be process right now.'];
+        $pack = BidPackages::findOne(['id' => @$_REQUEST['pack'], 'status' => 1]);
+        $wallet = $this->view->params['user'];
+
+        $pay = $this->payAuth(@$_REQUEST['msisdn'], $pack->price);
+
+        if (@$pay[0] == 'alert') {
+            $msg = $pay;
+            audit_log($_REQUEST['msisdn'], 'pack_purchase', 'ok', " Pack purchased in the que -$pack->name,price-$pack->price,bid-$pack->bids");
+
+        }
+
+        if (@$pay[0] == 'error') {
+            $msg = $pay;
+            audit_log($_REQUEST['msisdn'], 'pack_purchase', 'ok', " Pack purchased in the que -$pack->name,price-$pack->price,bid-$pack->bids");
+
+        }
+
+        if (@$pay[0] == 'success') {
+
+            $q = "UPDATE tbl_bid_wallet set bid_balance = bid_balance + $pack->bids WHERE id = $wallet->id";
+
+
+            try {
+                $a = Yii::$app->db->createCommand($q)->execute();
+                $t = new BidTransaction();
+                $t->wallet_id = (string)$wallet->id;
+                $t->customer_id = (string)$wallet->cust->id;
+                $t->msisdn = $wallet->cust->msisdn;
+                $t->bid_value = $pack->bids;
+                $t->product_id = (string)$pack->id;
+                $t->type = 1;
+                $t->balance = $wallet->bid_balance + $pack->bids;
+
+                if(!$t->save()){
+                   // print_r($t->getErrors());
+                }
+
+                audit_log($_REQUEST['msisdn'], 'pack_purchase', 'ok', " Pack purchased-$pack->name,price-$pack->price,bid-$pack->bids");
+                $msg = ['success', 'You have successfully purchased ' . $pack->name . ' package.'];
+            } catch (Exception $e) {
+                audit_log($_REQUEST['msisdn'], 'pack_purchase', 'not_ok', "db error Pack - $pack->name");
+            }
+            query_log($q);
+        }
+
+        Yii::$app->cache->set($wallet->cust->id . 'notice_message', json_encode($msg), 2);
 
         return $this->render('index', ['products' => $this->view->params['products'], 'message' => ['success', $msg], 'balance' => $this->view->params['user']->bid_balance]);
-  
+
+    }
+
+    private function payAuth($msisdn, $price)
+    {
+        $val = Yii::$app->cache->get($msisdn . 'pay');
+
+        if ($val === false) {
+            Yii::$app->cache->set($msisdn . 'pay', true, 10);
+            //ToDO payment api
+            $api = true;
+            if ($api) {
+                return ['success'];
+            } else {
+                return ['error', 'Your request can not be process right now.'];
+            }
+        }
+
+        return ['alert', 'Your another purchase request already in the queue.'];
     }
 
 }

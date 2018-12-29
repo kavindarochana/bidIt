@@ -68,6 +68,60 @@ use yii\helpers\Url;
   }
 </script>
 
+
+
+<script type="text/javascript">
+var ul = "'" + <?php Url::base(true); ?> + "'";
+console.log(ul);
+$(document).on("click", "#eee", function () {
+    console.log('Ok');
+    var myImageId = $(this).data('id');
+    var pack = $(this).data('pack');
+    console.log(pack);
+    $(".modal-body #myImage").attr("src", myImageId);
+    $('.modal-body #aaaqqq').html("1aaaaa");
+
+    
+    $('#aqw').on('click', function (event) {
+      
+      $.ajax({
+       url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=site/purchase' ?>',
+       type: 'post',
+       data: {
+                 msisdn:'<?=$this->params['user']->cust->msisdn;?>', 
+                 pack:pack , 
+                 _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+             },
+       success: function (data) {
+          console.log('a');
+          window.location='<?="index.php?msisdn=".$this->params['user']->cust->msisdn;?>';
+
+          //this.redirect;
+       }
+  });
+});
+    
+});
+</script>
+
+<div class="modal fade" id="gardenImage" tabindex="-1" role="dialog" aria-labelledby="gardenImageLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="myImage" class="img-responsive" src="" alt="">
+                <p id=''></p>
+                <span id = "aaaqqq" class="input-number-increment" ></span>
+                <!-- <input type="text" class="input-xlarge" id="date" name="date" /> -->
+                    
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="button" id = "aqw" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <noscript>
       <iframe src="index.html" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
     </noscript>
@@ -103,6 +157,7 @@ use yii\helpers\Url;
 
           <li><a href="unishop/v3-0/template-2/account-orders.html"><span>Account</span></a>
             <ul class="sub-menu">
+      
                 <li><a href="unishop/v3-0/template-2/account-orders.html">Orders List</a></li>
                 <li><a href="unishop/v3-0/template-2/account-wishlist.html">Wishlist</a></li>
                 <li><a href="unishop/v3-0/template-2/account-profile.html">Profile Page</a></li>
@@ -117,7 +172,7 @@ use yii\helpers\Url;
       </nav>
       <!-- Toolbar-->
       <div class="toolbar">
-        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span class="count"><?=$this->params['user']->bid_balance;?></span></i></a></div>
+        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span style = "display: table; border-radius: 39%;" class="count"><?=$this->params['user']->bid_balance;?></span></i></a></div>
         <!-- Toolbar Dropdown-->
         <div class="toolbar-dropdown">
           <!-- Mobile Menu Section-->
@@ -231,15 +286,14 @@ use yii\helpers\Url;
                 <li class="media mb-4"><img class="d-flex rounded-circle align-self-start mr-3" src="<?=Url::base(true) . $this->params['user']->cust->propic?>" width="120" alt="Media">
                   <div class="media-body">
                     <ul class="list-unstyled text-sm mb-4">
-                      <li><strong>MSIDN:</strong>  <?=$this->params['user']->cust->msisdn;?></li>
-                      <li><strong>Name:</strong>  <?=$this->params['user']->cust->name;?></li>
-                      <li><strong>NIC:</strong>  <?=$this->params['user']->cust->nic;?></li>
-                      <li><strong>Balance:</strong>  <?=$this->params['user']->bid_balance;?> bids</li>
-                      <li><strong>Status:</strong>  <?=$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
-    ['site/unsubscribe', 'uid' => $this->params['user']->cust->id, 'msisdn' => $this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
+                      <li><strong>MSIDN:</strong>  <?=@$this->params['user']->cust->msisdn;?></li>
+                      <li><strong>Name:</strong>  <?=@$this->params['user']->cust->name;?></li>
+                      <li><strong>NIC:</strong>  <?=@$this->params['user']->cust->nic;?></li>
+                      <li><strong>Balance:</strong>  <?=@$this->params['user']->bid_balance;?> bids</li>
+                      <li><strong>Status:</strong>  <?=@$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
+    ['site/unsubscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
 '<span class="text-danger">Unsubscribe</span> ' . Html::a('Activate',
-    ['site/subscribe', 'uid' => $this->params['user']->cust->id, 'msisdn' => $this->params['user']->cust->msisdn], ['class' => 'text-success']);?> </li>
-
+    ['site/subscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-success']);?> </li>
                     </ul>
                   </div>
                 </li>
@@ -281,36 +335,20 @@ use yii\helpers\Url;
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/01.jpg" alt="Product"></a>
+                <?php
+                $packs = $this->params['packs'];
+                foreach($packs as $p) {
+                  echo '<tr>
+                  <td>
+                      <div class="product-item"><a class="product-thumb" href=""><img src="'.Url::base(true).$p->image.'" alt="Product"></a>
                         <div class="product-info">
-                        <i class="material-icons favorite_border"></i> <h4 class="product-title"><a data-toggle="modal" data-target="#modalDefault">3-Pack Saver</a></h4><span><em>Price:</em> 20.00LKR</span><span><em>Bids:</em> 3</span>
+                        <i class="material-icons favorite_border"></i> <h4 class="product-title"><a id= "eee" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
                         </div>
                       </div>
                     </td>
                     <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="product-item"><a class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/02.jpg" alt="Product"></a>
-                        <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">10-Pack Saver</a></h4><span><em>Price:</em> 65.00LKR</span><span><em>Bids:</em> 10</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="product-item"><a onlick = "test()" class="product-thumb" href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/cart/03.jpg" alt="Product"></a>
-                        <div class="product-info">
-                          <h4 class="product-title"><a href="unishop/v3-0/template-2/shop-single.html">20-Pack Saver</a></h4><span><em>Price:</em> 120.00LKR</span><span><em>Bids:</em> 20</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
-                  </tr>
+                  </tr>';
+                }?>
                 </tbody>
               </table>
             </div>

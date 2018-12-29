@@ -9,5 +9,13 @@ return [
 
     'imageBidPacks' => '/bid/data/images/bidpacks/',
 
+    'audit_log' => '/opt/bidit/logs/audit_logs/',
+    
+    'api_log' => '/opt/bidit/logs/api_logs/',
+
+    'query_log' => '/opt/bidit/logs/query_logs/',
+
+    'wallet_log' => '/opt/bidit/logs/wallet_logs/'
+
     
 ];
