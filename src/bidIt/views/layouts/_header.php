@@ -286,7 +286,7 @@ $(document).on("click", "#eee", function () {
                 <li class="media mb-4"><img class="d-flex rounded-circle align-self-start mr-3" src="<?=Url::base(true) . $this->params['user']->cust->propic?>" width="120" alt="Media">
                   <div class="media-body">
                     <ul class="list-unstyled text-sm mb-4">
-                      <li><strong>MSIDN:</strong>  <?=@$this->params['user']->cust->msisdn;?></li>
+                      <li><strong>MSISDN:</strong>  <?=@$this->params['user']->cust->msisdn;?></li>
                       <li><strong>Name:</strong>  <?=@$this->params['user']->cust->name;?></li>
                       <li><strong>NIC:</strong>  <?=@$this->params['user']->cust->nic;?></li>
                       <li><strong>Balance:</strong>  <?=@$this->params['user']->bid_balance;?> bids</li>

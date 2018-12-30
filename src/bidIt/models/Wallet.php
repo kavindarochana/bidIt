@@ -36,7 +36,7 @@ class Wallet extends \yii\db\ActiveRecord
             [['cust_id', 'bid_balance', 'update_ts'], 'required'],
             [['cust_id', 'bid_balance'], 'integer'],
             [['expire', 'create_ts', 'update_ts'], 'safe'],
-            [['cust_id'], 'exist', 'skipOnError' => true, 'targetClass' => TblBidSubscriber::className(), 'targetAttribute' => ['cust_id' => 'id']],
+            [['cust_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subscriber::className(), 'targetAttribute' => ['cust_id' => 'id']],
         ];
     }
 

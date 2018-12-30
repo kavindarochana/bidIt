@@ -9,12 +9,14 @@ use Yii;
  *
  * @property int $id
  * @property string $msisdn
+ * @property string $nic
  * @property string $name
  * @property int $status
+ * @property int $chanel 1=web, 2=ussd, 3=sms, 4 = mobile app, 5 = unknown
+ * @property string $propic
  * @property string $create_ts
  * @property string $update_ts
  *
- * @property TblBidBidTransaction[] $tblBidBidTransactions
  * @property TblBidWallet[] $tblBidWallets
  */
 class Subscriber extends \yii\db\ActiveRecord
@@ -33,11 +35,13 @@ class Subscriber extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['msisdn', 'status'], 'required'],
-            [['status'], 'integer'],
+            [['msisdn'], 'required'],
+            [['status', 'chanel'], 'integer'],
             [['create_ts', 'update_ts'], 'safe'],
             [['msisdn'], 'string', 'max' => 15],
+            [['nic'], 'string', 'max' => 12],
             [['name'], 'string', 'max' => 100],
+            [['propic'], 'string', 'max' => 140],
         ];
     }
 
@@ -49,8 +53,11 @@ class Subscriber extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'msisdn' => 'Msisdn',
+            'nic' => 'Nic',
             'name' => 'Name',
             'status' => 'Status',
+            'chanel' => 'Chanel',
+            'propic' => 'Propic',
             'create_ts' => 'Create Ts',
             'update_ts' => 'Update Ts',
         ];
@@ -59,16 +66,8 @@ class Subscriber extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTblBidBidTransactions()
-    {
-        return $this->hasMany(TblBidBidTransaction::className(), ['customer_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTblBidWallets()
     {
-        return $this->hasMany(TblBidWallet::className(), ['cust_id' => 'id']);
+        return $this->hasMany(Wallet::className(), ['cust_id' => 'id']);
     }
 }

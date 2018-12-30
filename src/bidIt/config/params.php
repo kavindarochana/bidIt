@@ -15,7 +15,9 @@ return [
 
     'query_log' => '/opt/bidit/logs/query_logs/',
 
-    'wallet_log' => '/opt/bidit/logs/wallet_logs/'
+    'wallet_log' => '/opt/bidit/logs/wallet_logs/',
+
+    'msisdn_prefix' => ['71', '70', '76', '77']
 
     
 ];

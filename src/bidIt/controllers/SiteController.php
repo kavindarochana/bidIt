@@ -4,12 +4,12 @@ namespace app\controllers;
 
 use app\models\BidPackages;
 use app\models\BidProduct;
+use app\models\BidTransaction;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\Subscriber;
 use app\models\User;
 use app\models\Wallet;
-use app\models\BidTransaction;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -307,6 +307,16 @@ class SiteController extends Controller
     {
         $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
 
+        if (!in_array(substr($msisdn, -9, -7), Yii::$app->params['msisdn_prefix'])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
+
+        if (!$subscriber) {
+            $this->initialReg($msisdn);
+        }
+
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
             $product = BidProduct::findOne(1);
@@ -346,20 +356,19 @@ class SiteController extends Controller
 
             $q = "UPDATE tbl_bid_wallet set bid_balance = bid_balance + $pack->bids WHERE id = $wallet->id";
 
-
             try {
                 $a = Yii::$app->db->createCommand($q)->execute();
                 $t = new BidTransaction();
-                $t->wallet_id = (string)$wallet->id;
-                $t->customer_id = (string)$wallet->cust->id;
+                $t->wallet_id = (string) $wallet->id;
+                $t->customer_id = (string) $wallet->cust->id;
                 $t->msisdn = $wallet->cust->msisdn;
                 $t->bid_value = $pack->bids;
-                $t->product_id = (string)$pack->id;
+                $t->product_id = (string) $pack->id;
                 $t->type = 1;
                 $t->balance = $wallet->bid_balance + $pack->bids;
 
-                if(!$t->save()){
-                   // print_r($t->getErrors());
+                if (!$t->save()) {
+                    // print_r($t->getErrors());
                 }
 
                 audit_log($_REQUEST['msisdn'], 'pack_purchase', 'ok', " Pack purchased-$pack->name,price-$pack->price,bid-$pack->bids");
@@ -392,6 +401,27 @@ class SiteController extends Controller
         }
 
         return ['alert', 'Your another purchase request already in the queue.'];
+    }
+
+    private function initialReg($msisdn)
+    {
+        $s = new Subscriber();
+        $s->msisdn = $msisdn;
+
+        if (!$s->save()) {
+
+        }
+
+        $c = new Wallet();
+        $c->cust_id = $s->id;
+        $c->bid_balance = 2;
+        $c->update_ts = date('Y-m-d H:i:s');
+        // $c->save();
+
+        if (!$c->save()) {
+            print_r($c->getErrors());
+        }
+
     }
 
 }
