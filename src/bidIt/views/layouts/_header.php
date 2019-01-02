@@ -172,7 +172,7 @@ $(document).on("click", "#eee", function () {
       </nav>
       <!-- Toolbar-->
       <div class="toolbar">
-        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span style = "display: table; border-radius: 39%;" class="count"><?=$this->params['user']->bid_balance;?></span></i></a></div>
+        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span style = "display: table; border-radius: 39%; right: -12px;" class="count"><?=$this->params['user']->bid_balance+$this->params['user']->daily_bid_balance;?></span></i></a></div>
         <!-- Toolbar Dropdown-->
         <div class="toolbar-dropdown">
           <!-- Mobile Menu Section-->
@@ -326,6 +326,10 @@ $(document).on("click", "#eee", function () {
           <!-- Shopping Cart Section-->
           <div class="toolbar-section" id="cart">
             <div class="table-responsive shopping-cart mb-0">
+            <div class="form-group">
+              <label class="entry-title" >Free Bids <span class="badge badge-danger badge-pill"><?=$this->params['user']->daily_bid_balance?></span></label>
+              <label class="entry-title" >Walllet Balance <span class="badge badge-success badge-pill"><?=$this->params['user']->bid_balance?></span></label>
+            </div>
               <table class="table">
                 <thead>
                   <tr>

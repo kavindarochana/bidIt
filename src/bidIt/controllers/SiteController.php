@@ -424,4 +424,24 @@ class SiteController extends Controller
 
     }
 
+    public function actionUpdateProductStatus()
+    {
+        try {
+            $q = 'UPDATE tbl_bid_product 
+                SET 
+                    `status` = CASE
+                        WHEN `start_date` <=NOW() AND `end_date` > NOW() THEN 1
+                        WHEN `start_date` <=NOW() AND `end_date` <= NOW() THEN 2
+                    END
+                WHERE (`status` = 0 OR `status` = 1)';
+
+            query_log('cron_update_product_status', $q);
+
+            $res = Yii::$app->db->createCommand($q)->execute();
+            print_r($res);
+            
+        } catch(Exception $e) {
+            print_r($e);
+        }
+    }
 }
