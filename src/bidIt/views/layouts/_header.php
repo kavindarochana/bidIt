@@ -35,7 +35,8 @@ use yii\helpers\Url;
     <!-- Modernizr-->
     <script src="unishop/v3.0/template-2/js/modernizr.min.js"></script>
     <!-- <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/jquery.growl.js" type="text/javascript"></script>
     <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
 
@@ -62,17 +63,11 @@ use yii\helpers\Url;
     </style> -->
 </head>
 <body>
-<script>
-  function test() {
-    console.log('aaaa');
-  }
-</script>
-
 
 
 <script type="text/javascript">
 var ul = "'" + <?php Url::base(true); ?> + "'";
-console.log(ul);
+
 $(document).on("click", "#eee", function () {
     console.log('Ok');
     var myImageId = $(this).data('id');
@@ -277,7 +272,7 @@ $(document).on("click", "#eee", function () {
           <div class="toolbar-section" id="account">
             <ul class="nav nav-tabs nav-justified" role="tablist">
               <li class="nav-item"><a class="nav-link active" href="#myAccount" data-toggle="tab" role="tab">My Account</a></li>
-              <li class="nav-item"><a class="nav-link" href="#signup" data-toggle="tab" role="tab">Sign Up</a></li>
+              <li class="nav-item"><a class="nav-link" href="#signup" data-toggle="tab" role="tab">Edit Account</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="myAccount" role="tabpanel">

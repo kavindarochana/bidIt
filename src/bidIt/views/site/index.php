@@ -3,12 +3,9 @@
 /* @var $this yii\web\View */
 use yii\helpers\Url;
 
-$this->title = 'My Yii Application';
+$this->title = 'BidIt';
 
-// print_r(apache_request_headers());
-// api_log();exit;
-// if (Yii::$app->session->hasFlash('success'))
-// echo Yii::$app->session->getFlash('success');
+//NOtice message - Toats
 $msg =  json_decode(Yii::$app->cache->get($this->params['user']->cust->id.'notice_message'));
 
 $message = ($msg == null ? @$message:$msg);
@@ -42,35 +39,37 @@ if (@$message[0] == 'warning') {
 // $.growl.error({ message: "The kitten is attacking!" });
 // $.growl.notice({ message: "The kitten is cute!" });
 // $.growl.warning({ message: "The kitten is ugly!" });
+
+//End notice message
 ?>
 
 <script>
-$(
+// $(
 
-".screenshot-link").click(function () {
-var site = $(this).attr("site");
-var num = $(this).attr("num");
-// $.post(
+// ".screenshot-link").click(function () {
+// var site = $(this).attr("site");
+// var num = $(this).attr("num");
+// // $.post(
 
-// "/Development/Main/Screenshot",
-// {
+// // "/Development/Main/Screenshot",
+// // {
 
-// site: site, num: num }
-// );
-$.confirm({
+// // site: site, num: num }
+// // );
+// $.confirm({
 
-  content: x,
-});
-$('a.twitter').confirm({
-  buttons: {
-      hey: function(){
-         // location.href = this.$target.attr(\'href\');
-      }
-  }
-});
+//   content: x,
+// });
+// $('a.twitter').confirm({
+//   buttons: {
+//       hey: function(){
+//          // location.href = this.$target.attr(\'href\');
+//       }
+//   }
+// });
 
-console.log(num);
-});
+// console.log(num);
+// });
 </script>
 
 <?php $a = 'aaaa';
@@ -79,7 +78,7 @@ echo '
 
 
 var x = $("#er").data(\'id\');
-console.log(x);console.log(x);
+
 
 $(\'a.twitter\').confirm({
   content: $("#er").data(\'id\'),
@@ -96,7 +95,6 @@ function openDialog() {
 </script>';
 
 ?>
-
 
 
 
@@ -150,9 +148,31 @@ function openDialog() {
             </div>
               <a class="d-inline-block" href="unishop/v3-0/template-2/shop-single.html"><img style = "max-width:100%;" src="<?php echo Url::base(true) . $products->image; ?>" alt="Special Offer"></a>
               <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="unishop/v3-0/template-2/shop-single.html"></a></h3>
-              <span class="h4 text-danger"><?=$products->price?> LKR</span>
+              <span id = "bidName" class ="h5 mb-30">Price - </span> <span id = "bidVal" class="h5 text-danger"><?=$products->price?> LKR</span>
+
+
               <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
-                <input style = "width:180px;"class="form-control form-control-pill form-control-sm" type="text" id="small-pill-input" placeholder="Place your bid">
+                <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
+                
+                
+<input style = "width:180px;" type = "number" pattern="[0-5]" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+
+
+
+
+<script>
+var v1 =  '<?=$products->price . " LKR"?>';
+$('#bidPrice').keyup(function () {
+  $('#bidVal').text($(this).val() * <?=$products->price ?> +" LKR");
+  $('#bidName').text("Your Bid - ").val();
+  //$('#namea').text("aaaa").val();
+ 
+  if($(this).val() == '') {
+  	$('#bidVal').text(v1).val();
+    $('#bidName').text("Price - ").val();
+  }
+});
+	</script>
                 <button style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
               </div>
           </div>
