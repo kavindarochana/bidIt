@@ -32,3 +32,19 @@
                           <li><a href="unishop/v3-0/template-2/checkout-complete.html">Complete</a></li>
                       </ul>
                     </li>
+
+
+
+
+
+
+                    echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+        <span class="product-rating text-warning"><i class="socicon-flickr"></i></span>
+            <div class="category-card-thumb w-100"><img src="'. Url::base(true). $prE->image .'" alt="Category"></div>
+            <span class="product-badge btn-link-secondary">Expired</span>
+            <div class="category-card-info w-100">
+              <h3 class="category-card-title">'.$prE->name.'</h3>
+              <h4 style = "text-align:left" class="category-card-subtitle">Price '. $prE->price.'LKR</h4>
+              <h4 style = "text-align:left" class="category-card-subtitle">Winner '. $prE->winner.'</h4>
+              <h4 style = "text-align:left" class="category-card-subtitle">Winning Bid '. $prE->winner_bid . '*' . $prE->price .' = ' . $prE->winner_bid*$prE->price  .'pts</h4>
+            </div></div></div>';

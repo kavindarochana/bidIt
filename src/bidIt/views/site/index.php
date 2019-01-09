@@ -268,25 +268,36 @@ function openDialog() {
           if(!@$products['end']['id']) {
           foreach($products['end'] as $prE) {
         echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+        <span class="product-rating text-warning"><i style = "font-size: 2em;font-weight: 600;" class="material-icons flight_takeoff text-danger"></i></span>
             <div class="category-card-thumb w-100"><img src="'. Url::base(true). $prE->image .'" alt="Category"></div>
-            <span class="product-badge btn-link-secondary">Expired</span>
+            <span style = "color:#dc9814" class="product-badge btn-link-secondary">End</span>
             <div class="category-card-info w-100">
-              <h3 class="category-card-title">'.$prE->name.'</h3>
-              <h4 style = "text-align:left" class="category-card-subtitle">Price '. $prE->price.'LKR</h4>
-              <h4 style = "text-align:left" class="category-card-subtitle">Winner '. $prE->winner.'</h4>
-              <h4 style = "text-align:left" class="category-card-subtitle">Winning Bid '. $prE->winner_bid . '*' . $prE->price .' = ' . $prE->winner_bid*$prE->price  .'pts</h4>
-            </div></div></div>';
+            <td>
+            <div class="product-item">
+              <div class="product-info">
+                <h4 class="product-title">' . $prE->name . '</h4>
+                <div class="text-lg text-medium text-muted">Price ' . $prE->price . ' LKR</div>
+                <div class="text-sm">Winner:
+                  <div class="d-inline text-success">'.$prE->winner.'</div>
+                </div>
+                <div class="text-sm">Winning Bid:
+                  <div class="d-inline text-success">'.$prE->winner_bid.'</div>
+                </div>
+              </div>
+            </div>
+          </td></div></div></div>';
           }
         }else {
           $prE = $products['end'];
           echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+          <span style = "color:#dc9814" class="product-rating text-warning"><i style = "font-size: 2em;font-weight: 600;" class="material-icons flight_takeoff text-danger"></i></span>
             <div class="category-card-thumb w-100"><img src="'.Url::base(true). $prE['image'].'" alt="Category"></div>
-            <span class="product-badge btn-link-secondary">Expired</span>
+            <span class="product-badge btn-link-secondary">End</span>
             <div class="category-card-info w-100">
               <h3 class="category-card-title">'.$prE['name'].'</h3>
-              <h4 style = "text-align:left" class="category-card-subtitle">Price '. $prE['price'].'LKR</h4>
-              <h4 style = "text-align:left" class="category-card-subtitle">Winner '. $prE['winner'].'</h4>
-              <h4 style = "text-align:left" class="category-card-subtitle">Winning Bid  '. $prE['winner_bid'] .'</h4>
+              <h4 class="category-card-subtitle">Price '. $prE['price'].'LKR</h4>
+              <h4 class="category-card-subtitle">Winner '. $prE['winner'].'</h4>
+              <h4 class="category-card-subtitle">Winning Bid  '. $prE['winner_bid'] .'</h4>
             </div></div></div>';
         }
         }
