@@ -280,38 +280,72 @@ class SiteController extends Controller
     {
         $this->authRequest();
         $subscriber = Subscriber::findOne(['id' => $_GET['uid'], 'msisdn' => $_GET['msisdn']]);
+
+        if ($subscriber->status == 0) {
+            $msg = ['alert', 'You have already unsubscribed with BidIt'];
+            return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
+        }
+
         $subscriber->status = 0;
 
-        if ($subscriber->save()) {
+        $wallet = Wallet::findOne(['cust_id' => $_REQUEST['uid']]);
+        $wallet->daily_bid_balance_stauts = 0;
+
+        if ($subscriber->save() && $wallet->save()) {
             $this->authRequest();
-            $msg = 'You have successfully unsubscribed from BidIt.';
+            $msg = ['success', 'You have successfully unsubscribed from BidIt.'];
+        } else {
+            $msg = ['error', 'Your request can not be process right now.'];
         }
-        return $this->render('index', ['products' => $this->view->params['products'], 'message' => ['success', $msg], 'balance' => $this->view->params['user']->bid_balance]);
+        return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
     }
 
     public function actionSubscribe()
     {
         $this->authRequest();
+
         $subscriber = Subscriber::findOne(['id' => $_GET['uid'], 'msisdn' => $_GET['msisdn']]);
+
+        if ($subscriber->status == 1) {
+            $msg = ['alert', 'You have already subscribed with BidIt'];
+            return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
+        }
+
+        $sub = $this->subUser();
+
+        if (1 * $sub !== 1) {
+            return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
+        }
         $subscriber->status = 1;
 
-        if ($subscriber->save()) {
+        $wallet = Wallet::findOne(['cust_id' => $_REQUEST['uid']]);
+        $wallet->daily_bid_balance_stauts = 1;
+
+        if ($subscriber->save() && $wallet->save()) {
             $this->authRequest();
             $msg = 'You have been successfully subscribed for BidIt.';
+
+        } else {
+            $msg = ['error', 'Your request can not be process right now.'];
         }
         $user = $this->view->params['user'];
-        return $this->render('index', ['products' => $this->view->params['products'], 'message' => ['success', $msg], 'balance' => $this->view->params['user']->bid_balance]);
+        return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
     }
 
-    private function authRequest($msidn = null)
+    private function authRequest($msisdn = null)
     {
-        $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
+        if (!$msisdn) {
+            $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
+        }
 
         if (!in_array(substr($msisdn, -9, -7), Yii::$app->params['msisdn_prefix'])) {
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
-
-        $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
+        if (!Yii::$app->session->get('user')) {
+            $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
+        } else {
+            $subscriber = Yii::$app->session->get('user');
+        }
 
         if (!$subscriber) {
             $this->initialReg($msisdn);
@@ -319,11 +353,30 @@ class SiteController extends Controller
 
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
-            $product = BidProduct::findOne(1);
+            $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `create_ts` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . "'")->limit(26)->all();
+            $product = [];
+            foreach ($prd as $p) {
+                if ($p['status'] == 1) {
+                    $product['active'] = $p;
+                    continue;
+                }
+                if (($p['status'] == 0)) {
+                    $product['queue'] = $p;
+                    continue;
+                }
+            }
+
+            $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.msisdn,b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
+                a.winner_id = b.id order by id DESC limit 5';
+
+            foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
+                $product['end'][] = (object)$q;
+            }
             $packages = BidPackages::find(['status = 1'])->all();
             $this->view->params['user'] = $user;
             $this->view->params['products'] = $product;
             $this->view->params['packs'] = $packages;
+            Yii::$app->session->set('user', $user);
             return $user;
         }
 
@@ -427,8 +480,8 @@ class SiteController extends Controller
     public function actionUpdateProductStatus()
     {
         try {
-            $q = 'UPDATE tbl_bid_product 
-                SET 
+            $q = 'UPDATE tbl_bid_product
+                SET
                     `status` = CASE
                         WHEN `start_date` <=NOW() AND `end_date` > NOW() THEN 1
                         WHEN `start_date` <=NOW() AND `end_date` <= NOW() THEN 2
@@ -439,9 +492,160 @@ class SiteController extends Controller
 
             $res = Yii::$app->db->createCommand($q)->execute();
             print_r($res);
-            
-        } catch(Exception $e) {
+
+        } catch (Exception $e) {
             print_r($e);
         }
+    }
+
+    public function actionHistory()
+    {
+        $user = $this->authRequest();
+
+        $out = [];
+
+        // $q = "SELECT a.id, a.msisdn, a.bid_value, a.wallet_id, a.type, a.customer_id, a.balance, a.create_ts,
+        //     coalesce(b.name, c.name) name, coalesce(b.price, c.price) price from tbl_bid_bid_transaction a where  a.wallet_id = $user->id
+        //     left outer join tbl_bid_packages b on b.id = a.product_id and a.type = 1
+        //     left outer join tbl_bid_product c on c.id = a.product_id and a.type = 2
+        //     ORDER by a.id desc limit 30";
+
+        $q1 = "SELECT a.id, a.msisdn, a.bid_value, a.wallet_id, a.type, a.customer_id, a.balance, a.create_ts, b.name, b.price from
+            tbl_bid_bid_transaction a,tbl_bid_product b where
+            a.product_id = b.id and a.type = 2 and a.wallet_id = $user->id ORDER by a.id desc limit 30";
+
+        $q2 = "SELECT a.id, a.msisdn, a.bid_value, a.wallet_id, a.type, a.customer_id, a.balance, a.create_ts, b.name, b.price from
+            tbl_bid_bid_transaction a,tbl_bid_packages b where
+            a.product_id = b.id and a.type = 1 and a.wallet_id = $user->id ORDER by a.id desc limit 30";
+
+        foreach (Yii::$app->db->createCommand($q1)->queryAll() as $o) {
+            $out[] = [
+                'date' => $o['create_ts'],
+                'name' => $o['name'],
+                'price' => $o['price'],
+                'bid_value' => $o['bid_value'],
+                'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' : $o['bid_value'] . '*' . $o['price'] . ' = ' . $o['bid_value'] * $o['price'] . 'pts',
+                'type' => $o['type'],
+            ];
+        }
+
+        foreach (Yii::$app->db->createCommand($q2)->queryAll() as $o) {
+            $out[] = [
+                'date' => $o['create_ts'],
+                'name' => $o['name'],
+                'price' => $o['price'],
+                'bid_value' => $o['bid_value'],
+                'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' : $o['bid_value'] . '*' . $o['price'] . ' = ' . $o['bid_value'] * $o['price'] . 'pts',
+                'type' => $o['type'],
+            ];
+        }
+        arsort($out);
+        return $this->render('history', ['data' => $out]);
+    }
+
+    public function actionBidNow()
+    {
+        $msisdn = Yii::$app->session->get('user')['cust']['msisdn'];
+        $bidVal = $_REQUEST['bid'];
+        $pId = $_REQUEST['pId'];
+        $user = $this->authRequest($msisdn);
+        $status = $this->subStatus();
+
+        if ($bidVal % 5 !== 0) {
+            $msg = ['error', 'Invalid bid. Accept only divisible by 5 values'];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+            return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+
+        }
+
+        if ($status[0] == 1) {
+            $msg = $this->doCharge($user['id'], $bidVal, $pId);
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+
+            return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+
+        } else {
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($status), 2);
+
+            return $this->render('index', ['products' => $this->view->params['products'], 'error' => ['error', $status['1']], 'balance' => $this->view->params['user']->bid_balance]);
+
+        }
+
+    }
+
+    private function subStatus()
+    {
+        $user = Yii::$app->session->get('user');
+
+        if ($user['bid_balance'] == 0 && $user['daily_bid_balance'] == 0 && $user['daily_bid_balance_stauts'] == 0) {
+            return ['alert', 'You have not subscribe for BidIt. Please subscribe.'];
+        }
+
+        if ($user['bid_balance'] == 0 && $user['daily_bid_balance'] == 0 && $user['daily_bid_balance_stauts'] == 1) {
+            return ['alert', 'Insufficent bid balance.  Today is your lucky day. Please purchase bids.'];
+        }
+
+        if ($user['bid_balance'] == 0 && $user['daily_bid_balnace'] == 0 && $user['daily_bid_balance_stauts'] == 1) {
+            return ['alert', 'Insufficent bid balance. Please purchase bids.'];
+        }
+
+        return [1];
+    }
+
+    private function doCharge($id, $bidVal, $pId)
+    {
+        $wallet = Wallet::findOne($id);
+
+        if (1 * $wallet->daily_bid_balance > 0) {
+            $wallet->daily_bid_balance = $wallet->daily_bid_balance - 1;
+
+            if ($wallet->save()) {
+                $t = new BidTransaction();
+                $t->wallet_id = (string) $wallet->id;
+                $t->customer_id = (string) $wallet->cust->id;
+                $t->msisdn = $wallet->cust->msisdn;
+                $t->bid_value = $bidVal;
+                $t->product_id = $pId;
+                $t->type = 2;
+                $t->balance = $wallet->bid_balance + $wallet->daily_bid_balance;
+                $t->save();
+                audit_log($wallet->cust->msisdn, 'bid_place', 'ok', " daily bid Product - $pId Bid - $bidVal");
+                return ['success', 'You Bid placed successfully'];
+            } else {
+                audit_log($wallet->cust->msisdn, 'bid_place', 'not_ok', " daily bid Product - $pId Bid - $bidVal");
+                return ['error', 'Your bid can not be place right now.'];
+            }
+
+        }
+
+        if (1 * $wallet->bid_balance > 0) {audit_log('bid');
+            $wallet->bid_balance = $wallet->bid_balance - 1;
+
+            if ($wallet->save()) {
+                audit_log($wallet->cust->msisdn, 'bid_place', 'not_ok', "bid db error Product - $pId Bid - $bidVal");
+                $t = new BidTransaction();
+                $t->wallet_id = (string) $wallet->id;
+                $t->customer_id = (string) $wallet->cust->id;
+                $t->msisdn = $wallet->cust->msisdn;
+                $t->bid_value = $bidVal;
+                $t->product_id = $pId;
+                $t->type = 2;
+                $t->balance = $wallet->bid_balance + $wallet->daily_bid_balance;
+                $t->save();
+                return ['success', 'You Bid placed successfully'];
+            } else {audit_log('dailybid not save');
+                audit_log($wallet->cust->msisdn, 'bid_place', 'ok', " bid Product - $pId Bid - $bidVal");
+                return ['error', 'Your bid can not be place right now.'];
+            }
+
+        }
+
+    }
+
+    private function subUser($msisdn, $pack)
+    {
+        //TODO api call
+
+        return true;
     }
 }

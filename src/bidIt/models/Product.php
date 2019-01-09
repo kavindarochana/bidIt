@@ -14,6 +14,8 @@ use Yii;
  * @property double $price
  * @property string $start_date
  * @property string $end_date
+ * @property int $winner_id 
+ * @property int $winner_bid
  * @property int $status 0-queue,1-active,2-end,3-disable/pause
  * @property string $create_ts
  * @property string $update_ts
@@ -40,7 +42,9 @@ class Product extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['price'], 'number'],
             [['start_date', 'end_date', 'create_ts', 'update_ts'], 'safe'],
+            [['winner_id', 'status'], 'integer'],
             [['status'], 'integer'],
+            [['winner_id', 'winner_bid', 'status'], 'integer'],
             [['name'], 'string', 'max' => 35],
             [['image'], 'string', 'max' => 140],
         ];

@@ -6,12 +6,12 @@ use yii\helpers\Url;
 $this->title = 'BidIt';
 
 //NOtice message - Toats
-$msg =  json_decode(Yii::$app->cache->get($this->params['user']->cust->id.'notice_message'));
+$msg = json_decode(Yii::$app->cache->get($this->params['user']->cust->id . 'notice_message'));
 
-$message = ($msg == null ? @$message:$msg);
+$message = ($msg == null ? @$message : $msg);
 
 if (@$message[0] == 'success') {
- 
+
     echo "<script type=\"text/javascript\">
               $.growl.notice({ title: \"\", message: \"$message[1]\" });
           </script>";
@@ -24,13 +24,13 @@ if (@$message[0] == 'error') {
 }
 
 if (@$message[0] == 'alert') {
-  echo "<script type=\"text/javascript\">
+    echo "<script type=\"text/javascript\">
             $.growl({ title: \"\", message: \"$message[1]\" });
         </script>";
 }
 
 if (@$message[0] == 'warning') {
-  echo "<script type=\"text/javascript\">
+    echo "<script type=\"text/javascript\">
             $.growl.warning({ title: \"\", message: \"$message[1]\" });
         </script>";
 }
@@ -128,10 +128,10 @@ function openDialog() {
         <div class="col-xl-3 col-md-4">
         <div class="card pt-3 pb-2 mb-30">
           <div class="card-body text-center"><span class="product-badge text-danger">Live</span>
-            <h4 style = "margin-bottom: 15px;  margin-top: -20px;"><?=$products->name;?><!-- <span class='text-danger'>-30%</span> --></h4>
+            <h4 style = "margin-bottom: 15px;  margin-top: -20px;"><?=$products['active']->name;?><!-- <span class='text-danger'>-30%</span> --></h4>
             <div style = "margin-top: -0.2rem !important;" class="mt-4">
-              <span class="days_ref">Expire - <span class= "text-success"><?=date('M d Y H:i', strtotime($products->end_date))?></span></span>
-                <div class="countdown countdown-alt" data-date-time="<?=date('m/d/Y H:i:s', strtotime($products->end_date));?>">
+              <span class="days_ref">Expire - <span class= "text-success"><?=date('M d Y H:i', strtotime($products['active']->end_date))?></span></span>
+                <div class="countdown countdown-alt" data-date-time="<?=date('m/d/Y H:i:s', strtotime($products['active']->end_date));?>">
                   <div class="item">
                     <div class="days">00</div><span class="days_ref">Days</span>
                   </div>
@@ -146,35 +146,97 @@ function openDialog() {
                   </div>
                 </div>
             </div>
-              <a class="d-inline-block" href="unishop/v3-0/template-2/shop-single.html"><img style = "max-width:100%;" src="<?php echo Url::base(true) . $products->image; ?>" alt="Special Offer"></a>
+              <a class="d-inline-block" href="unishop/v3-0/template-2/shop-single.html"><img style = "max-width:100%;" src="<?php echo Url::base(true) . $products['active']->image; ?>" alt="Special Offer"></a>
               <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="unishop/v3-0/template-2/shop-single.html"></a></h3>
-              <span id = "bidName" class ="h5 mb-30">Price - </span> <span id = "bidVal" class="h5 text-danger"><?=$products->price?> LKR</span>
+              <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"><?=$products['active']->price?> LKR</span>
 
 
               <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
                 <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
-                
-                
-<input style = "width:180px;" type = "number" pattern="[0-5]" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+                <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
+<input style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "2" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
 
-
+<button id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
 
 
 <script>
-var v1 =  '<?=$products->price . " LKR"?>';
-$('#bidPrice').keyup(function () {
-  $('#bidVal').text($(this).val() * <?=$products->price ?> +" LKR");
-  $('#bidName').text("Your Bid - ").val();
-  //$('#namea').text("aaaa").val();
- 
-  if($(this).val() == '') {
-  	$('#bidVal').text(v1).val();
-    $('#bidName').text("Price - ").val();
-  }
-});
-	</script>
-                <button style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
-              </div>
+  var v1 =  '<?=$products["active"]->price . " LKR"?>';
+
+  // if (1 * $('#bidPrice').val() == 0) {console.log(111);
+  //   $('#bidBtn').prop('disabled', false);
+  // }
+
+  //bid value input validation
+  $('#bidPrice').keyup(function () {
+
+    $('#bidVal').text($(this).val() * <?=$products['active']->price?> +"pts");
+    $('#bidName').text("Your Bid - ").val();
+    $('#bidVal').css({'font-weight': '550', 'color':'#20c997',}); //The specific CSS changes after the first one, are, of course, just examples.
+    $('#bidName').css({'font-weight': '550', 'color':'#404040', 'font-size': '18px'});
+    $('#bidBtn').prop('disabled', false);
+
+    if($(this).val() == '' || $(this).val() == 0) {
+      $('#bidName').css({'font-weight': '400', 'color':'#404040', 'font-size': '18px'});
+      $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+      $('#bidVal').text(v1).val();
+      $('#bidName').text("Price - ").val();
+      $('#bidBtn').prop('disabled', true);
+    }
+
+    if($(this).val()%5 !== 0) {
+      $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
+      // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+      $('#bidVal').text('').val();
+      $('#bidName').text("Invalid bid. Accept only divisible by 5 values...").val();
+      $('#bidBtn').prop('disabled', true);
+    }
+
+  });
+
+  //bid click validation
+
+  $('#bidBtn').click(function () {
+    var pId = '<?=$products['active']->id?>';
+    if(0 == 1*$('#bidPrice').val()) {
+      $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
+      // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+      $('#bidVal').text('').val();
+      $('#bidName').text("Invalid bid. Accept only divisible by 5 values...").val();
+      $('#bidBtn').prop('disabled', true);
+    } else {
+      $('#bidBtn').prop('disabled', true);
+      $('#bidVal').prop('disabled', true);
+      $('#loading-indicator').show(); //Show your spinner before the AJAX call
+      $.ajax({
+        url: '<?php echo Yii::$app->request->baseUrl . '/index.php?r=site/bid-now' ?>',
+        method: 'POST',
+        data: {
+            pId:pId,
+            bid:1*$('#bidPrice').val(),
+            _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+          },
+        success: function(data){
+          $('#spinner').hide();
+          window.location='<?="index.php?msisdn=" . $this->params['user']->cust->msisdn;?>';
+        },
+        error: function(){
+          setTimeout(() => {
+            $('#loading-indicator').hide();
+            $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
+            $('#bidVal').text('').val();
+            $('#bidVal').prop('disabled', false);
+            $('#bidName').text("Can not palce your bid right now.").val();
+            $('#bidBtn').prop('disabled', false);
+          },2000);
+        }
+      });
+    }
+
+  });
+
+
+</script>
+                </div>
           </div>
         </div>
       </div>
@@ -184,6 +246,7 @@ $('#bidPrice').keyup(function () {
     <section class="hero-slider">
        <h3 class="text-center mb-30">Upcoming</h3>
       <div class="owl-carousel large-controls dots-inside pb-4" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 8000 }">
+       
         <div class="container-fluid">
           <div class="col-md-3 col-sm-6 mb-30"><span class="product-badge text-success">Queue</span><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
             <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/03.jpg" alt="Category"></div>
@@ -192,56 +255,43 @@ $('#bidPrice').keyup(function () {
               <h4 class="category-card-subtitle">Starting from 269.00 LKR</h4>
             </div></a></div>
         </div>
-        <div class="container-fluid">
-          <div class="col-md-3 col-sm-6 mb-30"><span class="product-badge text-success">Queue</span><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/04.jpg" alt="Category"></div>
-            <div class="category-card-info w-100">
-              <h3 class="category-card-title">Cabinets</h3>
-              <h4 class="category-card-subtitle">Starting from 220.00 LKR</h4>
-            </div></a></div>
         </div>
-        <div class="container-fluid">
-          <div class="col-md-3 col-sm-6 mb-30"><span class="product-badge text-success">Queue</span><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/05.jpg" alt="Category"></div>
-            <div class="category-card-info w-100">
-              <h3 class="category-card-title">Tables</h3>
-              <h4 class="category-card-subtitle">Starting from 198.00 LKR</h4>
-            </div></a></div>
-        </div>
+
       </div>
     </section>
 
 <section class="container padding-top-3x padding-bottom-3x">
       <h3 class="text-center mb-30">Past Auctions</h3>
       <div class="row">
-        <div class="col-md-3 col-sm-6 mb-30"><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/03.jpg" alt="Category"></div>
+      <?php 
+        if ($products['end']) {
+          if(!@$products['end']['id']) {
+          foreach($products['end'] as $prE) {
+        echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+            <div style = "width:192px; height:210px" class="category-card-thumb w-100"><img src="'. Url::base(true). $prE->image .'" alt="Category"></div>
             <span class="product-badge btn-link-secondary">Expired</span>
             <div class="category-card-info w-100">
-              <h3 class="category-card-title">Seating</h3>
-              <h4 class="category-card-subtitle">Starting from 269.00 LKR</h4>
-            </div></a></div>
-        <div class="col-md-3 col-sm-6 mb-30"><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/04.jpg" alt="Category"></div>
+              <h3 class="category-card-title">'.$prE->name.'</h3>
+              <h4 style = "text-align:left" class="category-card-subtitle">Price '. $prE->price.'LKR</h4>
+              <h4 style = "text-align:left" class="category-card-subtitle">Winner '. $prE->winner.'</h4>
+              <h4 style = "text-align:left" class="category-card-subtitle">Winning Bid '. $prE->winner_bid . '*' . $prE->price .' = ' . $prE->winner_bid*$prE->price  .'pts</h4>
+            </div></div></div>';
+          }
+        }else {
+          $prE = $products['end'];
+          echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+            <div style = "width:192px; height:210px" class="category-card-thumb w-100"><img src="'.Url::base(true). $prE['image'].'" alt="Category"></div>
             <span class="product-badge btn-link-secondary">Expired</span>
             <div class="category-card-info w-100">
-              <h3 class="category-card-title">Cabinets</h3>
-              <h4 class="category-card-subtitle">Starting from 220.00 LKR</h4>
-            </div></a></div>
-        <div class="col-md-3 col-sm-6 mb-30"><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/05.jpg" alt="Category"></div>
-            <span class="product-badge btn-link-secondary">Expired</span>
-            <div class="category-card-info w-100">
-              <h3 class="category-card-title">Tables</h3>
-              <h4 class="category-card-subtitle">Starting from 198.00 LKR</h4>
-            </div></a></div>
-        <div class="col-md-3 col-sm-6 mb-30"><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/02.jpg" alt="Category"></div>
-            <span class="product-badge btn-link-secondary">Expired</span>
-            <div class="category-card-info w-100">
-              <h3 class="category-card-title">Lighting</h3>
-              <h4 class="category-card-subtitle">Starting from 95.99 LKR</h4>
-            </div></a></div>
+              <h3 class="category-card-title">'.$prE['name'].'</h3>
+              <h4 style = "text-align:left" class="category-card-subtitle">Price '. $prE['price'].'LKR</h4>
+              <h4 style = "text-align:left" class="category-card-subtitle">Winner '. $prE['winner'].'</h4>
+              <h4 style = "text-align:left" class="category-card-subtitle">Winning Bid  '. $prE['winner_bid'] .'</h4>
+            </div></div></div>';
+        }
+        }
+      
+      ?>
       </div>
       <div class="text-center"><a class="btn btn-outline-secondary mb-0" href="unishop/v3-0/template-2/shop-categories.html">Load More</a></div>
     </section>
@@ -297,3 +347,6 @@ $('#bidPrice').keyup(function () {
     });
 });
             </script> -->
+
+
+

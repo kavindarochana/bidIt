@@ -111,7 +111,7 @@ $(document).on("click", "#eee", function () {
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-             <button type="button" id = "aqw" class="btn btn-primary">Save changes</button>
+             <button type="button" id = "aqw" class="btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -126,7 +126,7 @@ $(document).on("click", "#eee", function () {
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
     <header class="navbar navbar-sticky">
       <!-- Site Branding-->
-      <div class="site-branding"><a class="site-logo hidden-xs-down" href="<?=Url::to(["site/index"])?>"><img src="unishop/v3.0/template-2/img/logo/logo.png" alt="Unishop"></a><a class="site-logo logo-sm hidden-sm-up" href="<?=Url::to(["site/index"])?>"><img style = "max-width: 120px; max-height: 36px;" src="unishop/v3.0/template-2/img/logo/logo-sm.png" alt="Unishop"></a>
+      <div class="site-branding"><a class="site-logo hidden-xs-down" href="<?=Url::to(["site/index"]) .'&msisdn='. $this->params['user']->cust->msisdn ?>"><img src="unishop/v3.0/template-2/img/logo/logo.png" alt="Unishop"></a><a class="site-logo logo-sm hidden-sm-up" href="<?=Url::to(["site/index"]).'&msisdn='.$this->params['user']->cust->msisdn?>"><img style = "max-width: 120px; max-height: 36px;" src="unishop/v3.0/template-2/img/logo/logo-sm.png" alt="Unishop"></a>
         <div class="lang-currency-switcher">
           <div class="lang-currency-toggle"><img src="unishop/v3.0/template-2/img/flags/GB.png" alt="English"><span>USD</span><i class="material-icons arrow_drop_down"></i>
           </div>
@@ -135,7 +135,7 @@ $(document).on("click", "#eee", function () {
       <!-- Main Navigation-->
       <nav class="site-menu">
         <ul>
-          <li class="active"><a href="<?=Url::to(["site/index"])?>"><span>Home</span></a>
+          <li class="active"><a href="<?=Url::to(["site/index"]) . '&msisdn=' . $this->params['user']->cust->msisdn?>"><span>Home</span></a>
             <ul class="sub-menu">
               <li class="active has-children"><a href="unishop/v3-0/template-2/index.html"><span>Hero Slider</span></a>
                 <ul class="sub-menu w-400 p-0">
@@ -153,13 +153,8 @@ $(document).on("click", "#eee", function () {
           <li><a href="unishop/v3-0/template-2/account-orders.html"><span>Account</span></a>
             <ul class="sub-menu">
       
-                <li><a href="unishop/v3-0/template-2/account-orders.html">Orders List</a></li>
-                <li><a href="unishop/v3-0/template-2/account-wishlist.html">Wishlist</a></li>
-                <li><a href="unishop/v3-0/template-2/account-profile.html">Profile Page</a></li>
-                <li><a href="unishop/v3-0/template-2/account-address.html">Contact / Shipping Address</a></li>
-                <li><a href="unishop/v3-0/template-2/account-tickets.html">My Tickets</a></li>
-                <li><a href="unishop/v3-0/template-2/account-single-ticket.html">Single Ticket</a></li>
-                <li><a href="unishop/v3-0/template-2/account-password-recovery.html">Password Recovery</a></li>
+                <li><a href="<?=Url::to(["site/history"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Bid History</a></li>
+               
             </ul>
           </li>
 
@@ -175,7 +170,7 @@ $(document).on("click", "#eee", function () {
             <!-- Slideable (Mobile) Menu-->
             <nav class="slideable-menu mt-4">
               <ul class="menu">
-                <li class=""><span><a href="<?=Url::to(["site/index"])?>"><span>Home</span></a><span class="sub-menu-toggle"></span></span>
+                <li class=""><span><a href="<?=Url::to(["site/index"]) .'&msisdn='. $this->params['user']->cust->msisdn?>"><span>Home</span></a><span class="sub-menu-toggle"></span></span>
 
                 </li>
                 <li class="has-children"><span><a href="<?=Url::to(["site/about"])?>"><span>Shop</span></a><span class="sub-menu-toggle"></span></span>
@@ -190,30 +185,13 @@ $(document).on("click", "#eee", function () {
                           <li><a href="unishop/v3-0/template-2/shop-full-rs.html">Full Width Right Sidebar</a></li>
                           <li><a href="unishop/v3-0/template-2/shop-full-ft.html">Full Width Filters Top</a></li>
                       </ul>
-                    </li>
-                      <li><a href="unishop/v3-0/template-2/shop-single.html">Single Product</a></li>
-                      <li><a href="unishop/v3-0/template-2/cart.html">Cart</a></li>
-                    <li class="has-children"><span><a href="unishop/v3-0/template-2/checkout-address.html"><span>Checkout</span></a><span class="sub-menu-toggle"></span></span>
-                      <ul class="slideable-submenu">
-                          <li><a href="unishop/v3-0/template-2/checkout-address.html">Address</a></li>
-                          <li><a href="unishop/v3-0/template-2/checkout-shipping.html">Shipping</a></li>
-                          <li><a href="unishop/v3-0/template-2/checkout-payment.html">Payment</a></li>
-                          <li><a href="unishop/v3-0/template-2/checkout-review.html">Review</a></li>
-                          <li><a href="unishop/v3-0/template-2/checkout-complete.html">Complete</a></li>
-                      </ul>
-                    </li>
+                   
                   </ul>
                 </li>
                 <li class="has-children"><span><a href="unishop/v3-0/template-2/account-orders.html"><span>Account</span></a><span class="sub-menu-toggle"></span></span>
                   <ul class="slideable-submenu">
-                      <li><a href="unishop/v3-0/template-2/account-orders.html">Orders List</a></li>
-                      <li><a href="unishop/v3-0/template-2/account-wishlist.html">Wishlist</a></li>
-                      <li><a href="unishop/v3-0/template-2/account-profile.html">Profile Page</a></li>
-                      <li><a href="unishop/v3-0/template-2/account-address.html">Contact / Shipping Address</a></li>
-                      <li><a href="index.html">Open Ticket</a></li>
-                      <li><a href="unishop/v3-0/template-2/account-tickets.html">My Tickets</a></li>
-                      <li><a href="unishop/v3-0/template-2/account-single-ticket.html">Single Ticket</a></li>
-                      <li><a href="unishop/v3-0/template-2/account-password-recovery.html">Password Recovery</a></li>
+                      <li><a href="<?=Url::to(["site/history"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Bid History</a></li>
+                      
                   </ul>
                 </li>
               </ul>
@@ -341,7 +319,7 @@ $(document).on("click", "#eee", function () {
                   <td>
                       <div class="product-item"><a class="product-thumb" href=""><img src="'.Url::base(true).$p->image.'" alt="Product"></a>
                         <div class="product-info">
-                        <i class="material-icons favorite_border"></i> <h4 class="product-title"><a id= "eee" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
+                        <h4 class="product-title"><a id= "eee" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
                         </div>
                       </div>
                     </td>
@@ -359,3 +337,7 @@ $(document).on("click", "#eee", function () {
         </div>
       </div>
     </header>
+
+
+
+   
