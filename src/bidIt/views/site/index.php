@@ -268,7 +268,7 @@ function openDialog() {
           if(!@$products['end']['id']) {
           foreach($products['end'] as $prE) {
         echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
-            <div style = "width:192px; height:210px" class="category-card-thumb w-100"><img src="'. Url::base(true). $prE->image .'" alt="Category"></div>
+            <div class="category-card-thumb w-100"><img src="'. Url::base(true). $prE->image .'" alt="Category"></div>
             <span class="product-badge btn-link-secondary">Expired</span>
             <div class="category-card-info w-100">
               <h3 class="category-card-title">'.$prE->name.'</h3>
@@ -280,7 +280,7 @@ function openDialog() {
         }else {
           $prE = $products['end'];
           echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
-            <div style = "width:192px; height:210px" class="category-card-thumb w-100"><img src="'.Url::base(true). $prE['image'].'" alt="Category"></div>
+            <div class="category-card-thumb w-100"><img src="'.Url::base(true). $prE['image'].'" alt="Category"></div>
             <span class="product-badge btn-link-secondary">Expired</span>
             <div class="category-card-info w-100">
               <h3 class="category-card-title">'.$prE['name'].'</h3>
