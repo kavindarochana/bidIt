@@ -311,7 +311,7 @@ class SiteController extends Controller
             return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
         }
 
-        $sub = $this->subUser();
+        $sub = $this->subUser(1,1);
 
         if (1 * $sub !== 1) {
             return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
@@ -323,7 +323,7 @@ class SiteController extends Controller
 
         if ($subscriber->save() && $wallet->save()) {
             $this->authRequest();
-            $msg = 'You have been successfully subscribed for BidIt.';
+            $msg = ['success', 'You have been successfully subscribed for BidIt.'];
 
         } else {
             $msg = ['error', 'Your request can not be process right now.'];
