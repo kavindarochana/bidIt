@@ -72,9 +72,16 @@ $(document).on("click", "#eee", function () {
     console.log('Ok');
     var myImageId = $(this).data('id');
     var pack = $(this).data('pack');
+    var name = $(this).data('name');
+    var price = $(this).data('price');
+    var validity = $(this).data('validity');
+    var qty = $(this).data('qty');
     console.log(pack);
     $(".modal-body #myImage").attr("src", myImageId);
-    $('.modal-body #aaaqqq').html("1aaaaa");
+    $('.modal-body #model-price').html(price);
+    $('.modal-body #model-bid-amount').html(qty);
+    $('.modal-body #model-validity').html('Unimited');
+    $('.modal-body #model-name').html(name);
 
     
     $('#aqw').on('click', function (event) {
@@ -99,23 +106,27 @@ $(document).on("click", "#eee", function () {
 });
 </script>
 
+// Pack Purchase Model
 <div class="modal fade" id="gardenImage" tabindex="-1" role="dialog" aria-labelledby="gardenImageLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <img id="myImage" class="img-responsive" src="" alt="">
-                <p id=''></p>
-                <span id = "aaaqqq" class="input-number-increment" ></span>
-                <!-- <input type="text" class="input-xlarge" id="date" name="date" /> -->
-                    
+            <h4 class="product-title" id = "model-name"></h4>
+            <div class="product-item"><a><img id="myImage" class="img-responsive" src="" alt=""></a></div>
+                <ul class="list-unstyled text-sm mb-4">
+                  <li><span class="text-dark text-medium">Price: </span> <span id = "model-price"></span>LKR</li>
+                  <li><span class="text-dark text-medium">Bids: </span><span id = "model-bid-amount"></span> bids</li>
+                  <li><span class="text-dark text-medium">Validity: </span> <a href="#" class="navi-link"><span id = "model-validity"></span></a></li>
+                </ul>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-             <button type="button" id = "aqw" class="btn btn-primary">Confirm</button>
+             <button type="button" id = "aqw" class="btn btn-primary">Purchase</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <noscript>
       <iframe src="index.html" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
@@ -262,7 +273,7 @@ $(document).on("click", "#eee", function () {
                       <li><strong>MSISDN:</strong>  <?=@$this->params['user']->cust->msisdn;?></li>
                       <li><strong>Name:</strong>  <?=@$this->params['user']->cust->name;?></li>
                       <li><strong>NIC:</strong>  <?=@$this->params['user']->cust->nic;?></li>
-                      <li><strong>Balance:</strong>  <?=@$this->params['user']->bid_balance;?> bids</li>
+                      <li><strong>Balance:</strong>  <?=@$this->params['user']->bid_balance + @$this->params['user']->daily_bid_balance;?> bids</li>
                       <li><strong>Status:</strong>  <?=@$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
     ['site/unsubscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
 '<span class="text-danger">Unsubscribe</span> ' . Html::a('Activate',
@@ -316,15 +327,18 @@ $(document).on("click", "#eee", function () {
                 $packs = $this->params['packs'];
                 foreach($packs as $p) {
                   echo '<tr>
-                  <td>
-                      <div class="product-item"><a class="product-thumb" href=""><img src="'.Url::base(true).$p->image.'" alt="Product"></a>
-                        <div class="product-info">
-                        <h4 class="product-title"><a id= "eee" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="text-center"><a class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
-                  </tr>';
+                        <td>
+                            <div class="product-item"><a class="product-thumb" href=""><img src="'.Url::base(true).$p->image.'" alt="Package"></a>
+                              <div class="product-info">
+                              <h4 class="product-title"><a id= "eee" data-price = "'.$p->price.'" data-qty = "'.$p->bids.'" data-name = "'.$p->name.'" data-validity = "-" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
+                              <div class="text-sm">Availability:
+                                <div class="d-inline text-success">In Stock</div>
+                              </div>
+                            </div>
+                            </div>
+                        </td>
+                        <td class="text-center"><a id= "eee" data-price = "'.$p->price.'" data-qty = "'.$p->bids.'" data-name = "'.$p->name.'" data-validity = "-" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage" class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
+                      </tr>';
                 }?>
                 </tbody>
               </table>
