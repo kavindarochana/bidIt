@@ -48,3 +48,53 @@
               <h4 style = "text-align:left" class="category-card-subtitle">Winner '. $prE->winner.'</h4>
               <h4 style = "text-align:left" class="category-card-subtitle">Winning Bid '. $prE->winner_bid . '*' . $prE->price .' = ' . $prE->winner_bid*$prE->price  .'pts</h4>
             </div></div></div>';
+
+
+
+
+
+
+
+
+            min-height: auto;
+
+
+
+            <ul class="slideable-submenu">
+                          <li><a href="unishop/v3-0/template-2/shop-boxed-ls.html">Boxed Left Sidebar</a></li>
+                          <li><a href="unishop/v3-0/template-2/shop-boxed-rs.html">Boxed Right Sidebar</a></li>
+                          <li><a href="unishop/v3-0/template-2/shop-boxed-ft.html">Boxed Filters Top</a></li>
+                          <li><a href="unishop/v3-0/template-2/shop-full-ls.html">Full Width Left Sidebar</a></li>
+                          <li><a href="unishop/v3-0/template-2/shop-full-rs.html">Full Width Right Sidebar</a></li>
+                          <li><a href="unishop/v3-0/template-2/shop-full-ft.html">Full Width Filters Top</a></li>
+                      </ul>
+
+
+
+
+
+
+
+
+
+
+                       <!-- <section>
+      <button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#modalDefault">Default Modal</button>
+      <div class="modal fade" id="modalDefault" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Modal title</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-white btn-sm" type="button" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary btn-sm" type="button">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section> -->

@@ -370,14 +370,14 @@ class SiteController extends Controller
                 }
             }
 
-            $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.msisdn,b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
-                a.winner_id = b.id order by id DESC limit 5';
+            $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.msisdn, b.id as winId, b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
+                a.winner_id = b.id AND a.status = 3 order by id DESC limit 5';
 
             foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
                 $product['end'][] = (object)$q;
             }
 //Todo Chang active
-            if (@$product['active']) {
+            if (!@$product['active'] && @$product['queue'][0]) {
                 $product['next'] = $product['queue'][0];
                 array_shift($product['queue']);
             } 
@@ -495,6 +495,7 @@ class SiteController extends Controller
                     `status` = CASE
                         WHEN `start_date` <=NOW() AND `end_date` > NOW() THEN 1
                         WHEN `start_date` <=NOW() AND `end_date` <= NOW() THEN 2
+                        ELSE 6
                     END
                 WHERE (`status` = 0 OR `status` = 1)';
 
@@ -565,6 +566,16 @@ class SiteController extends Controller
             $msg = ['error', 'Invalid bid. Accept only divisible by 5 values'];
             Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
             return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+
+        }
+
+        $product = BidProduct::findOne($pId);
+        
+        if($product->end_date < date('Y-m-d H:i:s')) {
+            $msg = ['alert', 'This auction is expired.'];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+
+            return $this->render('index', ['products' => $this->view->params['products'], 'error' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
 
         }
 
@@ -659,8 +670,8 @@ class SiteController extends Controller
 
         $out = [];
 
-        $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.msisdn,b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
-                a.winner_id = b.id order by id DESC limit 26';
+        $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.id as winId, b.msisdn,b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
+                a.winner_id = b.id and a.status = 3 order by id DESC limit 26';
 
             foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
                $out[] = (object)$q;

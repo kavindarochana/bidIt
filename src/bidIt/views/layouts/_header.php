@@ -148,20 +148,20 @@ $(document).on("click", "#eee", function () {
         <ul>
           <li class="active"><a href="<?=Url::to(["site/index"]) . '&msisdn=' . $this->params['user']->cust->msisdn?>"><span>Home</span></a>
             <ul class="sub-menu">
-              <li class="active has-children"><a href="unishop/v3-0/template-2/index.html"><span>Hero Slider</span></a>
+              <li class="active has-children"><a href="#"><span>Hero Slider</span></a>
                 <ul class="sub-menu w-400 p-0">
-                  <li><a class="p-0" href="unishop/v3-0/template-2/index.html"><img src="unishop/v3.0/template-2/img/banners/home01.jpg" alt="Hero Slider Home"></a></li>
+                  <li><a class="p-0" href="#"><img src="unishop/v3.0/template-2/img/banners/home01.jpg" alt="Hero Slider Home"></a></li>
                 </ul>
               </li>
-              <li class="has-children"><a href="unishop/v3-0/template-2/home-featured-categories.html"><span>Categories Grid</span></a>
+              <li class="has-children"><a href="#"><span>Categories Grid</span></a>
                 <ul class="sub-menu w-400 p-0">
-                  <li><a class="p-0" href="unishop/v3-0/template-2/home-featured-categories.html"><img src="unishop/v3.0/template-2/img/banners/home02.jpg" alt="Categories Grid Home"></a></li>
+                  <li><a class="p-0" href="#"><img src="unishop/v3.0/template-2/img/banners/home02.jpg" alt="Categories Grid Home"></a></li>
                 </ul>
               </li>
             </ul>
           </li>
 
-          <li><a href="unishop/v3-0/template-2/account-orders.html"><span>Account</span></a>
+          <li><a href="#"><span>Account</span></a>
             <ul class="sub-menu">
       
                 <li><a href="<?=Url::to(["site/history"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Bid History</a></li>
@@ -182,24 +182,14 @@ $(document).on("click", "#eee", function () {
             <nav class="slideable-menu mt-4">
               <ul class="menu">
                 <li class=""><span><a href="<?=Url::to(["site/index"]) .'&msisdn='. $this->params['user']->cust->msisdn?>"><span>Home</span></a><span class="sub-menu-toggle"></span></span>
-                
+
                 </li>
-                <li class="has-children"><span><a href="<?=Url::to(["site/about"])?>"><span>Shop</span></a><span class="sub-menu-toggle"></span></span>
+                <li class="has-children"><span><a href="#"><span>Products</span></a><span class="sub-menu-toggle"></span></span>
                   <ul class="slideable-submenu">
-                      <li><a href="unishop/v3-0/template-2/shop-categories.html">Shop Categories</a></li>
-                    <li class="has-children"><span><a href="unishop/v3-0/template-2/shop-boxed-ls.html"><span>Shop Layout</span></a><span class="sub-menu-toggle"></span></span>
-                      <ul class="slideable-submenu">
-                          <li><a href="unishop/v3-0/template-2/shop-boxed-ls.html">Boxed Left Sidebar</a></li>
-                          <li><a href="unishop/v3-0/template-2/shop-boxed-rs.html">Boxed Right Sidebar</a></li>
-                          <li><a href="unishop/v3-0/template-2/shop-boxed-ft.html">Boxed Filters Top</a></li>
-                          <li><a href="unishop/v3-0/template-2/shop-full-ls.html">Full Width Left Sidebar</a></li>
-                          <li><a href="unishop/v3-0/template-2/shop-full-rs.html">Full Width Right Sidebar</a></li>
-                          <li><a href="unishop/v3-0/template-2/shop-full-ft.html">Full Width Filters Top</a></li>
-                      </ul>
-                   
+                      <li><a href="<?=Url::to(["site/products"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Closed Product List</a></li>
                   </ul>
                 </li>
-                <li class="has-children"><span><a href="unishop/v3-0/template-2/account-orders.html"><span>Account</span></a><span class="sub-menu-toggle"></span></span>
+                <li class="has-children"><span><a href="#"><span>Account</span></a><span class="sub-menu-toggle"></span></span>
                   <ul class="slideable-submenu">
                       <li><a href="<?=Url::to(["site/history"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Bid History</a></li>
                       
@@ -218,23 +208,23 @@ $(document).on("click", "#eee", function () {
               <h3 class="widget-title">Found in Products</h3>
               <!-- Entry-->
               <div class="entry">
-                <div class="entry-thumb"><a href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/widget/01.png" alt="Product"></a></div>
+                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/shop/widget/01.png" alt="Product"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html">Max <span class='text-highlighted'>Task Chair</span></a></h4><span class="entry-meta">299.00LKR</span>
+                  <h4 class="entry-title"><a href="#">Max <span class='text-highlighted'>Task Chair</span></a></h4><span class="entry-meta">299.00LKR</span>
                 </div>
               </div>
               <!-- Entry-->
               <div class="entry">
-                <div class="entry-thumb"><a href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/widget/02.png" alt="Product"></a></div>
+                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/shop/widget/02.png" alt="Product"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html"><span class='text-highlighted'>Drawer</span> File Cabinet</a></h4><span class="entry-meta">265.00LKR</span>
+                  <h4 class="entry-title"><a href="#"><span class='text-highlighted'>Drawer</span> File Cabinet</a></h4><span class="entry-meta">265.00LKR</span>
                 </div>
               </div>
               <!-- Entry-->
               <div class="entry">
-                <div class="entry-thumb"><a href="unishop/v3-0/template-2/shop-single.html"><img src="unishop/v3.0/template-2/img/shop/widget/03.png" alt="Product"></a></div>
+                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/shop/widget/03.png" alt="Product"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/shop-single.html">Campfire <span class='text-highlighted'>Paper</span> Table</a></h4><span class="entry-meta">570.00LKR</span>
+                  <h4 class="entry-title"><a href="#">Campfire <span class='text-highlighted'>Paper</span> Table</a></h4><span class="entry-meta">570.00LKR</span>
                 </div>
               </div>
             </div>
@@ -243,16 +233,16 @@ $(document).on("click", "#eee", function () {
               <h3 class="widget-title">Found in Blog</h3>
               <!-- Entry-->
               <div class="entry">
-                <div class="entry-thumb"><a href="unishop/v3-0/template-2/blog-single.html"><img src="unishop/v3.0/template-2/img/blog/widget/01.jpg" alt="Post"></a></div>
+                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/blog/widget/01.jpg" alt="Post"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/blog-single.html"><span class='text-highlighted'>Modern</span> Working Space</a></h4><span class="entry-meta">May 09</span>
+                  <h4 class="entry-title"><a href="#"><span class='text-highlighted'>Modern</span> Working Space</a></h4><span class="entry-meta">May 09</span>
                 </div>
               </div>
               <!-- Entry-->
               <div class="entry">
-                <div class="entry-thumb"><a href="unishop/v3-0/template-2/blog-single.html"><img src="unishop/v3.0/template-2/img/blog/widget/02.jpg" alt="Post"></a></div>
+                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/blog/widget/02.jpg" alt="Post"></a></div>
                 <div class="entry-content">
-                  <h4 class="entry-title"><a href="unishop/v3-0/template-2/blog-single.html">Interior <span class='text-highlighted'>Design</span> Tricks</a></h4><span class="entry-meta">April 18</span>
+                  <h4 class="entry-title"><a href="#">Interior <span class='text-highlighted'>Design</span> Tricks</a></h4><span class="entry-meta">April 18</span>
                 </div>
               </div>
             </div>
@@ -285,7 +275,7 @@ $(document).on("click", "#eee", function () {
   <option value = "3">Monthly - 15 LKR - 12bids</option>
 </select><a  id= "sub-btn" class = "btn btn-pill btn-sm btn-success">Activate</a>'?> </li>
                   </ul>
-                    <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
+                    <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator-sub" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
                   </div>
                 </li>
               </div>
@@ -299,7 +289,7 @@ $('#sub-btn').on('click', function (event) {
     $('#select-input').css({'border-color':'#ef0568'});
   } else {
     $('#select-input').css({'border-color':'#a7c04d', 'color': '#999', 'cursor': 'not-allowed'});
-    $('#loading-indicator').show();
+    $('#loading-indicator-sub').show();
     $('#sub-btn').css('cursor', 'not-allowed');
     $.ajax({
         url: '<?php echo Yii::$app->request->baseUrl . '/index.php?r=site/subscribe' ?>',
@@ -358,7 +348,7 @@ $('#sub-btn').on('click', function (event) {
                 <thead>
                   <tr>
                     <th colspan="2">
-                      <div class="d-flex justify-content-between align-items-center">Packages<a class="navi-link text-uppercase" href="unishop/v3-0/template-2/cart.html"></a></div>
+                      <div class="d-flex justify-content-between align-items-center">Packages<a class="navi-link text-uppercase" href="#"></a></div>
                     </th>
                   </tr>
                 </thead>
@@ -385,7 +375,7 @@ $('#sub-btn').on('click', function (event) {
             </div>
             <!-- <hr class="mb-3">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
-              <div class="pr-2 py-1 text-sm">Subtotal: <span class='text-dark text-medium'>622.40LKR</span></div><a class="btn btn-sm btn-success mb-0 mr-0" href="unishop/v3-0/template-2/checkout-address.html">Checkout</a>
+              <div class="pr-2 py-1 text-sm">Subtotal: <span class='text-dark text-medium'>622.40LKR</span></div><a class="btn btn-sm btn-success mb-0 mr-0" href="#">Checkout</a>
             </div> -->
           </div>
         </div>

@@ -17,6 +17,8 @@ return [
 
     'wallet_log' => '/opt/bidit/logs/wallet_logs/',
 
+    'cron_log' => '/opt/bidit/logs/cron_logs/',
+
     'msisdn_prefix' => ['71', '70', '76', '77']
 
     
