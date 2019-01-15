@@ -9,7 +9,7 @@ $this->title = 'BidIt';
 $msg = json_decode(Yii::$app->cache->get($this->params['user']->cust->id . 'notice_message'));
 
 $message = ($msg == null ? @$message : $msg);
-
+// print_r($message);exit;
 if (@$message[0] == 'success') {
 
     echo "<script type=\"text/javascript\">
@@ -127,11 +127,12 @@ function openDialog() {
         <!-- Special Offer-->
         <div class="col-xl-3 col-md-4">
         <div class="card pt-3 pb-2 mb-30">
-          <div class="card-body text-center"><span class="product-badge text-danger">Live</span>
-            <h4 style = "margin-bottom: 15px;  margin-top: -20px;"><?=$products['active']->name;?><!-- <span class='text-danger'>-30%</span> --></h4>
+        <?php if ($products['active']) {echo
+    '<div class="card-body text-center"><span class="product-badge text-info">Starting</span>
+            <h4 style = "margin-bottom: 15px;  margin-top: -20px;">' . $products['next']->name . '</h4>
             <div style = "margin-top: -0.2rem !important;" class="mt-4">
-              <span class="days_ref">Expire - <span class= "text-success"><?=date('M d Y H:i', strtotime($products['active']->end_date))?></span></span>
-                <div class="countdown countdown-alt" data-date-time="<?=date('m/d/Y H:i:s', strtotime($products['active']->end_date));?>">
+              <span class="days_ref">Start In - <span class= "text-success"> ' . date('M d Y H:i', strtotime($products['next']->end_date)) . '</span></span>
+                <div class="countdown countdown-alt" data-date-time="' . date('m/d/Y H:i:s', strtotime($products['next']->end_date)) . '">
                   <div class="item">
                     <div class="days">00</div><span class="days_ref">Days</span>
                   </div>
@@ -146,9 +147,40 @@ function openDialog() {
                   </div>
                 </div>
             </div>
-              <a class="d-inline-block" href="unishop/v3-0/template-2/shop-single.html"><img style = "max-width:100%;" src="<?php echo Url::base(true) . $products['active']->image; ?>" alt="Special Offer"></a>
-              <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="unishop/v3-0/template-2/shop-single.html"></a></h3>
-              <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"><?=$products['active']->price?> LKR</span>
+              <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['next']->image . '" alt="Special Offer"></a>
+              <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>
+              <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['next']->price . ' LKR</span>
+
+
+              <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
+                <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
+                <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
+<input disabled = "true" style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "2" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+
+<button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
+       ';} else {echo
+    '<div class="card-body text-center"><span class="product-badge text-danger">Live</span>
+            <h4 style = "margin-bottom: 15px;  margin-top: -20px;">' . $products['active']->name . '</h4>
+            <div style = "margin-top: -0.2rem !important;" class="mt-4">
+              <span class="days_ref">Expire - <span class= "text-success"> ' . date('M d Y H:i', strtotime($products['active']->end_date)) . '</span></span>
+                <div class="countdown countdown-alt" data-date-time="' . date('m/d/Y H:i:s', strtotime($products['active']->end_date)) . '">
+                  <div class="item">
+                    <div class="days">00</div><span class="days_ref">Days</span>
+                  </div>
+                  <div class="item">
+                    <div class="hours">00</div><span class="hours_ref">Hours</span>
+                  </div>
+                  <div class="item">
+                    <div class="minutes">00</div><span class="minutes_ref">Mins</span>
+                  </div>
+                  <div class="item">
+                    <div class="seconds">00</div><span class="seconds_ref">Secs</span>
+                  </div>
+                </div>
+            </div>
+              <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['active']->image . '" alt="Special Offer"></a>
+              <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>
+              <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['active']->price . ' LKR</span>
 
 
               <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
@@ -157,8 +189,8 @@ function openDialog() {
 <input style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "2" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
 
 <button id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
-
-
+       ';}?>
+       
 <script>
   var v1 =  '<?=$products["active"]->price . " LKR"?>';
 
@@ -242,69 +274,76 @@ function openDialog() {
       </div>
     </div>
     </section>
+      
+      <?php if($products['queue']) {
+       echo '<h3 class="text-center mb-30">Upcoming</h3>'.
+    '<section class="hero-slider">'.
+    '<div class="owl-carousel large-controls dots-inside pb-4" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 8000 }">'
+    .'<div class="col-md-3 col-sm-6 mb-30"><span class="product-badge text-success">Queue</span><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">';
+                     
+        foreach ($products['queue'] as $q) {
+          echo
+              '<div class="container-fluid">'
+                  .'  <div style = "margin-top: 3em;" class="category-card-thumb w-100"><img src="' . Url::base(true) . $q->image . '" alt="Upcoming Products"></div>'
+                  .'<div class="category-card-info w-100">'
+                  .'  <h3 class="category-card-title">' .$q->name . '</h3>'
+                  .'  <h4 class="category-card-subtitle">Starting from ' . $q->price . ' LKR</h4>'
+                  .'</div></a>'.
+                '</div>'.
+                '</div>';
+        }
 
-    <section class="hero-slider">
-       <h3 class="text-center mb-30">Upcoming</h3>
-      <div class="owl-carousel large-controls dots-inside pb-4" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 8000 }">
-       
-        <div class="container-fluid">
-          <div class="col-md-3 col-sm-6 mb-30"><span class="product-badge text-success">Queue</span><a class="category-card flex-wrap text-center pt-0" href="unishop/v3-0/template-2/shop-boxed-ls.html">
-            <div class="category-card-thumb w-100"><img src="unishop/v3.0/template-2/img/shop/categories/03.jpg" alt="Category"></div>
-            <div class="category-card-info w-100">
-              <h3 class="category-card-title">Seating</h3>
-              <h4 class="category-card-subtitle">Starting from 269.00 LKR</h4>
-            </div></a></div>
-        </div>
-        </div>
 
-      </div>
-    </section>
+          echo  '</div>'.
+            '</section>';
+      
+      } ?>
 
 <section class="container padding-top-3x padding-bottom-3x">
       <h3 class="text-center mb-30">Past Auctions</h3>
       <div class="row">
-      <?php 
-        if ($products['end']) {
-          if(!@$products['end']['id']) {
-          foreach($products['end'] as $prE) {
-        echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+      <?php
+if ($products['end']) {
+    if (!@$products['end']['id']) {
+        foreach ($products['end'] as $prE) {
+            echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
         <span class="product-rating text-warning"><i style = "font-size: 2em;font-weight: 600;" class="material-icons flight_takeoff text-danger"></i></span>
-            <div class="category-card-thumb w-100"><img src="'. Url::base(true). $prE->image .'" alt="Category"></div>
+            <div class="category-card-thumb w-100"><img src="' . Url::base(true) . $prE->image . '" alt="Category"></div>
             <span style = "color:#dc9814" class="product-badge btn-link-secondary">End</span>
             <div class="category-card-info w-100">
             <td>
             <div class="product-item">
               <div class="product-info">
                 <h4 class="product-title">' . $prE->name . '</h4>
-                <div class="text-lg text-medium text-muted">Price ' . $prE->price . ' LKR</div>
+                <div class="text-lg text-medium text-muted">Started from ' . $prE->price . ' LKR</div>
                 <div class="text-sm">Winner:
-                  <div class="d-inline text-success">'.$prE->winner.'</div>
+                  <div class="d-inline text-success">' . $prE->winner . '</div>
                 </div>
                 <div class="text-sm">Winning Bid:
-                  <div class="d-inline text-success">'.$prE->winner_bid.'</div>
+                  <div class="d-inline text-success">' . $prE->winner_bid . '</div>
                 </div>
               </div>
             </div>
           </td></div></div></div>';
-          }
-        }else {
-          $prE = $products['end'];
-          echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
+        }
+    } else {
+        $prE = $products['end'];
+        echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
           <span style = "color:#dc9814" class="product-rating text-warning"><i style = "font-size: 2em;font-weight: 600;" class="material-icons flight_takeoff text-danger"></i></span>
-            <div class="category-card-thumb w-100"><img src="'.Url::base(true). $prE['image'].'" alt="Category"></div>
+            <div class="category-card-thumb w-100"><img src="' . Url::base(true) . $prE['image'] . '" alt="Category"></div>
             <span class="product-badge btn-link-secondary">End</span>
             <div class="category-card-info w-100">
-              <h3 class="category-card-title">'.$prE['name'].'</h3>
-              <h4 class="category-card-subtitle">Price '. $prE['price'].'LKR</h4>
-              <h4 class="category-card-subtitle">Winner '. $prE['winner'].'</h4>
-              <h4 class="category-card-subtitle">Winning Bid  '. $prE['winner_bid'] .'</h4>
+              <h3 class="category-card-title">' . $prE['name'] . '</h3>
+              <h4 class="category-card-subtitle">Price ' . $prE['price'] . 'LKR</h4>
+              <h4 class="category-card-subtitle">Winner ' . $prE['winner'] . '</h4>
+              <h4 class="category-card-subtitle">Winning Bid  ' . $prE['winner_bid'] . '</h4>
             </div></div></div>';
-        }
-        }
-      
-      ?>
+    }
+}
+
+?>
       </div>
-      <div class="text-center"><a class="btn btn-outline-secondary mb-0" href="unishop/v3-0/template-2/shop-categories.html">Load More</a></div>
+      <div class="text-center"><a class="btn btn-outline-secondary mb-0" href="<?=Url::to(["site/products"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Load More</a></div>
     </section>
 
     <!-- <section>

@@ -182,7 +182,7 @@ $(document).on("click", "#eee", function () {
             <nav class="slideable-menu mt-4">
               <ul class="menu">
                 <li class=""><span><a href="<?=Url::to(["site/index"]) .'&msisdn='. $this->params['user']->cust->msisdn?>"><span>Home</span></a><span class="sub-menu-toggle"></span></span>
-
+                
                 </li>
                 <li class="has-children"><span><a href="<?=Url::to(["site/about"])?>"><span>Shop</span></a><span class="sub-menu-toggle"></span></span>
                   <ul class="slideable-submenu">
@@ -273,19 +273,59 @@ $(document).on("click", "#eee", function () {
                       <li><strong>MSISDN:</strong>  <?=@$this->params['user']->cust->msisdn;?></li>
                       <li><strong>Name:</strong>  <?=@$this->params['user']->cust->name;?></li>
                       <li><strong>NIC:</strong>  <?=@$this->params['user']->cust->nic;?></li>
+               
                       <li><strong>Balance:</strong>  <?=@$this->params['user']->bid_balance + @$this->params['user']->daily_bid_balance;?> bids</li>
                       <li><strong>Status:</strong>  <?=@$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
     ['site/unsubscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
-'<span class="text-danger">Unsubscribe</span> ' . Html::a('Activate',
-    ['site/subscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-success']);?> </li>
-                    </ul>
+'<span class="text-danger">Unsubscribe</span>
+<select class="form-control" id="select-input">
+  <option value = "0">Choose Pack...</option>
+  <option value = "1">Daily - 5 LKR - 3bids</option>
+  <option value = "2">Weekly  - 10 LKR - 7bids</option>
+  <option value = "3">Monthly - 15 LKR - 12bids</option>
+</select><a  id= "sub-btn" class = "btn btn-pill btn-sm btn-success">Activate</a>'?> </li>
+                  </ul>
+                    <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
                   </div>
                 </li>
               </div>
+<script>
 
+$('#sub-btn').on('click', function (event) {
 
+  var packId = ($('#select-input').val());
 
+  if (packId == 0 ) {
+    $('#select-input').css({'border-color':'#ef0568'});
+  } else {
+    $('#select-input').css({'border-color':'#a7c04d', 'color': '#999', 'cursor': 'not-allowed'});
+    $('#loading-indicator').show();
+    $('#sub-btn').css('cursor', 'not-allowed');
+    $.ajax({
+        url: '<?php echo Yii::$app->request->baseUrl . '/index.php?r=site/subscribe' ?>',
+        method: 'POST',
+        data: {
+            pId: packId,
+            uId: '<?=$this->params['user']->cust->id?>',
+            msisdn: '<?=$this->params['user']->cust->msisdn?>',
+            _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+          },
+        success: function(data){
+          $('#spinner').hide();
+          window.location='<?="index.php?msisdn=" . $this->params['user']->cust->msisdn;?>';
+        },
+        error: function(){
+          setTimeout(() => {
+            $('#loading-indicator').hide();
+          },2000);
+        }
+      });
+  }
 
+});
+  
+
+</script>
               </div>
               <div class="tab-pane fade" id="signup" role="tabpanel">
                 <form autocomplete="off" id="signup-form">

@@ -304,21 +304,24 @@ class SiteController extends Controller
     {
         $this->authRequest();
 
-        $subscriber = Subscriber::findOne(['id' => $_GET['uid'], 'msisdn' => $_GET['msisdn']]);
+        $subscriber = Subscriber::findOne(['id' => $_REQUEST['uId'], 'msisdn' => $_REQUEST['msisdn']]);
 
         if ($subscriber->status == 1) {
             $msg = ['alert', 'You have already subscribed with BidIt'];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
             return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
         }
 
         $sub = $this->subUser(1,1);
 
         if (1 * $sub !== 1) {
+            $msg = ['error', 'Error'];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
             return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
         }
         $subscriber->status = 1;
 
-        $wallet = Wallet::findOne(['cust_id' => $_REQUEST['uid']]);
+        $wallet = Wallet::findOne(['cust_id' => $_REQUEST['uId']]);
         $wallet->daily_bid_balance_stauts = 1;
 
         if ($subscriber->save() && $wallet->save()) {
@@ -329,6 +332,7 @@ class SiteController extends Controller
             $msg = ['error', 'Your request can not be process right now.'];
         }
         $user = $this->view->params['user'];
+        Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
         return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
     }
 
@@ -353,7 +357,7 @@ class SiteController extends Controller
 
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
-            $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `create_ts` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . "'")->limit(26)->all();
+            $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `create_ts` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . " ORDER BY id'")->limit(26)->all();
             $product = [];
             foreach ($prd as $p) {
                 if ($p['status'] == 1) {
@@ -361,7 +365,7 @@ class SiteController extends Controller
                     continue;
                 }
                 if (($p['status'] == 0)) {
-                    $product['queue'] = $p;
+                    $product['queue'][] = $p;
                     continue;
                 }
             }
@@ -372,6 +376,12 @@ class SiteController extends Controller
             foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
                 $product['end'][] = (object)$q;
             }
+//Todo Chang active
+            if (@$product['active']) {
+                $product['next'] = $product['queue'][0];
+                array_shift($product['queue']);
+            } 
+
             $packages = BidPackages::find(['status = 1'])->all();
             $this->view->params['user'] = $user;
             $this->view->params['products'] = $product;
@@ -641,6 +651,26 @@ class SiteController extends Controller
         }
 
     }
+
+
+    public function actionProducts()
+    {
+        $user = $this->authRequest();
+
+        $out = [];
+
+        $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.msisdn,b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
+                a.winner_id = b.id order by id DESC limit 26';
+
+            foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
+               $out[] = (object)$q;
+            }
+
+        return $this->render('products', ['list' => $out]);
+    }
+
+
+
 
     private function subUser($msisdn, $pack)
     {
