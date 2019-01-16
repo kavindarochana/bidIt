@@ -574,17 +574,17 @@ class SiteController extends Controller
     public function actionBidNow()
     {
         $msisdn = Yii::$app->session->get('user')['cust']['msisdn'];
-        $bidVal = $_REQUEST['bid'];
+        $bidVal = 1 * $_REQUEST['bid'];
         $pId = $_REQUEST['pId'];
         $user = $this->authRequest($msisdn);
         $status = $this->subStatus(false);
 
-        if ($bidVal % 5 !== 0) {
-            $msg = ['error', 'Invalid bid. Accept only divisible by 5 values'];
-            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
-            return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
+        // if ($bidVal % 5 !== 0) {
+        //     $msg = ['error', 'Invalid bid. Accept only divisible by 5 values'];
+        //     Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+        //     return $this->render('index', ['products' => $this->view->params['products'], 'balance' => $this->view->params['user']->bid_balance]);
 
-        }
+        // }
 
         $product = BidProduct::findOne($pId);
         

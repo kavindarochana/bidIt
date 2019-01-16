@@ -194,7 +194,7 @@ function openDialog() {
               <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
                 <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
                 <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
-<input style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "2" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+<input style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
 
 <button id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
        ';}?>
@@ -208,8 +208,8 @@ function openDialog() {
 
   //bid value input validation
   $('#bidPrice').keyup(function () {
-
-    $('#bidVal').text($(this).val() * <?=@$products['active']->price?> +"pts");
+    
+    $('#bidVal').text(parseInt(Math.abs($(this).val())) +" LKR");
     $('#bidName').text("Your Bid - ").val();
     $('#bidVal').css({'font-weight': '550', 'color':'#20c997',}); //The specific CSS changes after the first one, are, of course, just examples.
     $('#bidName').css({'font-weight': '550', 'color':'#404040', 'font-size': '18px'});
@@ -223,13 +223,13 @@ function openDialog() {
       $('#bidBtn').prop('disabled', true);
     }
 
-    if($(this).val()%5 !== 0) {
-      $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
-      // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
-      $('#bidVal').text('').val();
-      $('#bidName').text("Invalid bid. Accept only divisible by 5 values...").val();
-      $('#bidBtn').prop('disabled', true);
-    }
+    // if($(this).val()%5 !== 0) {
+    //   $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
+    //   // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+    //   $('#bidVal').text('').val();
+    //   $('#bidName').text("Invalid bid. Accept only divisible by 5 values...").val();
+    //   $('#bidBtn').prop('disabled', true);
+    // }
 
   });
 
@@ -237,11 +237,11 @@ function openDialog() {
 
   $('#bidBtn').click(function () {$('#loading-indicator').show();
     var pId = '<?=@$products['active']->id?>';
-    if(0 == 1*$('#bidPrice').val()) {
+    if(0 == parseInt(Math.abs($('#bidPrice').val()))) {
       $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
       // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
       $('#bidVal').text('').val();
-      $('#bidName').text("Invalid bid. Accept only divisible by 5 values...").val();
+      $('#bidName').text("Invalid bid. Please place a valid amount.").val();
       $('#bidBtn').prop('disabled', true);
     } else {
       $('#bidBtn').prop('disabled', true);
@@ -252,7 +252,7 @@ function openDialog() {
         method: 'POST',
         data: {
             pId:pId,
-            bid:1*$('#bidPrice').val(),
+            bid:parseInt(Math.abs($('#bidPrice').val())),
             _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
           },
         success: function(data){
@@ -339,7 +339,7 @@ if ($products['end']) {
                   <div class="d-inline text-success">' . $prE->winner . '</div>
                 </div>
                 <div class="text-sm">Winning Bid:
-                  <div class="d-inline text-success">' . $prE->winner_bid . '</div>
+                  <div class="d-inline text-success">' . $prE->winner_bid . ' LKR</div>
                 </div>';
                 }
                  echo '

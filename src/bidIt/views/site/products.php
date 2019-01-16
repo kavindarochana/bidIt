@@ -28,14 +28,14 @@ echo
                 <div class="category-card-info w-100">
                   <h3 class="category-card-title">' . $i->name . '</h3>
                   <h4 class="category-card-subtitle">Started from <b>' . $i->price . '</b> LKR</h4>'; 
-                  if ($i->winId !== 0) {
+                  if (1 * $i->winId !== 0) {
                       echo '
                     <h4 class="category-card-subtitle">Won by <div class="d-inline text-success"><b>'. $i->winner .'</b></div></h4>
-                    <h4 class="category-card-subtitle">Wining bid <b>'. $i->winner_bid .'</b> </h4>';
+                    <h4 class="category-card-subtitle">Wining bid <b>'. $i->winner_bid .'</b> LKR</h4>';
                   } 
                   else {
                     echo '
-                    <h4 class="category-card-subtitle"> <div class="d-inline text-success"><b>No winner</b></div></h4>
+                    <h4 class="category-card-subtitle"> <div style="color:#dc9814" class="d-inline text-alert"><b>No winner</b></div></h4>
                   <h4 class="category-card-subtitle">Wining bid <b> - </b> </h4>';
                   }
                   echo '
