@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 use yii\web\Response;
 
 class SiteController extends Controller
@@ -341,20 +342,23 @@ class SiteController extends Controller
         if (!$msisdn) {
             $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
         }
-
+        
         if (!in_array(substr($msisdn, -9, -7), Yii::$app->params['msisdn_prefix'])) {
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
-        if (!Yii::$app->session->get('user')) {
-            $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
-        } else {
-            $subscriber = Yii::$app->session->get('user');
-        }
+        
+        // if (!Yii::$app->session->get('user')) {
+        //     $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
+        // } else {
+        //     $subscriber = Yii::$app->session->get('user');print_r('aaa');
+        // }
 
+        $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
+        
         if (!$subscriber) {
             $this->initialReg($msisdn);
         }
-
+        
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
             $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `create_ts` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . " ORDER BY id'")->limit(26)->all();
@@ -470,9 +474,11 @@ class SiteController extends Controller
     {
         $s = new Subscriber();
         $s->msisdn = $msisdn;
+        $s->status = 2;
 
         if (!$s->save()) {
-
+            audit_log($msisdn, 'initial_registration', 'not_ok', 'Error ' . json_encode(@$s->getErrors()));
+            throw new HttpException(500, 'Your request currently face some issue. Pleas try again in few seconds.');
         }
 
         $c = new Wallet();
@@ -482,8 +488,10 @@ class SiteController extends Controller
         // $c->save();
 
         if (!$c->save()) {
-            print_r($c->getErrors());
+            audit_log($msisdn, 'initial_registration_wallet', 'not_ok', 'Error ' . json_encode(@$c->getErrors()));
+            throw new HttpException(500, 'Your regisraion process faced some issue . You have to contact customer care for complete your process. Don\'t to be late. Today is your lucky day. Please complete your registration.');
         }
+        audit_log($msisdn, 'initial_registration_wallet', 'ok', "success - wallet - $c->id " );
 
     }
 
