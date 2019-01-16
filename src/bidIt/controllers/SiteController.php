@@ -702,6 +702,16 @@ class SiteController extends Controller
     }
 
 
+    public function actionProduct()
+    {
+        $msisdn = @$msisdn = Yii::$app->session->get('user')['cust']['msisdn'];
+        $user = $this->authRequest($msisdn);
+        if (!@$_REQUEST['product'] || !$product = BidProduct::findOne($_REQUEST['product'])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+        return $this->render('product', ['data' => $product]);
+    }
+
 
 
     private function subUser($msisdn, $pack)
