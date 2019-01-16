@@ -39,7 +39,7 @@ class CoreController extends Controller
         try {
             $q = 'UPDATE tbl_bid_product
                 SET `status` = CASE
-                        WHEN `start_date` <=NOW() AND `end_date` >= NOW() THEN 1
+                        WHEN `start_date` <=NOW() AND `end_date` > NOW() THEN 1
                         WHEN `start_date` <=NOW() AND `end_date` <= NOW() THEN 2
                         ELSE 0
                     END
@@ -77,7 +77,7 @@ class CoreController extends Controller
                 $this->cron_log('update_product', 'ok', 'start winner select product ' . @$ltst->id . 'name - ' . @$ltst->name . 'result ' . $rs);
 
                 if ((int) @$rs == 0) {
-                    $this->cron_log('update_product', 'ok', 'end no winner ' . @$ltst->id . 'name - ' . @$ltst->name . 'result ' . $rs);
+                    $this->cron_log('update_product', 'ok', 'start no winner ' . @$ltst->id . 'name - ' . @$ltst->name . 'result ' . $rs);
 
                     $ltst->status = 3;
 
@@ -86,7 +86,7 @@ class CoreController extends Controller
                         return;
                     }
 
-                    $this->cron_log('update_product', 'ok', 'start no winner ' . @$ltst->id . $ltst->name . 'result ' . $rs);
+                    $this->cron_log('update_product', 'ok', 'end no winner ' . @$ltst->id . $ltst->name . 'result ' . $rs);
                 }
             }
 

@@ -404,6 +404,13 @@ class SiteController extends Controller
         $msg = ['error', 'Your request can not be process right now.'];
         $pack = BidPackages::findOne(['id' => @$_REQUEST['pack'], 'status' => 1]);
         $wallet = $this->view->params['user'];
+        $status = $this->subStatus();
+        
+        if (@$status[2] == 100) {
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($status), 2);
+            return $this->render('index', ['products' => $this->view->params['products'], 'error' => ['error', $status['1']], 'balance' => $this->view->params['user']->bid_balance]);
+
+        }
 
         $pay = $this->payAuth(@$_REQUEST['msisdn'], $pack->price);
 
@@ -570,7 +577,7 @@ class SiteController extends Controller
         $bidVal = $_REQUEST['bid'];
         $pId = $_REQUEST['pId'];
         $user = $this->authRequest($msisdn);
-        $status = $this->subStatus();
+        $status = $this->subStatus(false);
 
         if ($bidVal % 5 !== 0) {
             $msg = ['error', 'Invalid bid. Accept only divisible by 5 values'];
@@ -604,9 +611,13 @@ class SiteController extends Controller
 
     }
 
-    private function subStatus()
+    private function subStatus($initCheck = true)
     {
         $user = Yii::$app->session->get('user');
+
+        if ($initCheck && (1 * $user->cust['status'] !== 1)) {
+            return ['alert', 'You have not subscribe for BidIt. Please subscribe.', 100];
+        }
 
         if ($user['bid_balance'] == 0 && $user['daily_bid_balance'] == 0 && $user['daily_bid_balance_stauts'] == 0) {
             return ['alert', 'You have not subscribe for BidIt. Please subscribe.'];
@@ -616,7 +627,7 @@ class SiteController extends Controller
             return ['alert', 'Insufficent bid balance.  Today is your lucky day. Please purchase bids.'];
         }
 
-        if ($user['bid_balance'] == 0 && $user['daily_bid_balnace'] == 0 && $user['daily_bid_balance_stauts'] == 1) {
+        if ($user['bid_balance'] == 0 && $user['daily_bid_balance'] == 0 && $user['daily_bid_balance_stauts'] == 1) {
             return ['alert', 'Insufficent bid balance. Please purchase bids.'];
         }
 
