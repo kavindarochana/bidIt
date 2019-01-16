@@ -481,6 +481,8 @@ class SiteController extends Controller
             throw new HttpException(500, 'Your request currently face some issue. Pleas try again in few seconds.');
         }
 
+        audit_log($msisdn, 'initial_registration', 'ok', "Subscriber added customer id = $s->id");
+
         $c = new Wallet();
         $c->cust_id = $s->id;
         $c->bid_balance = 2;
