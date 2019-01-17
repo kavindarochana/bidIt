@@ -123,8 +123,8 @@ function openDialog() {
 
 
         <?php if (!@$products['active']) {
-          if (@$products['next']) {echo
-            '<section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
+    if (@$products['next']) {echo
+        '<section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
       <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>
       <div class="row">
         <!-- Special Offer-->
@@ -149,7 +149,7 @@ function openDialog() {
                   </div>
                 </div>
             </div>
-              <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['next']->image . '" alt="'. $products['next']->name .'"></a>
+              <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['next']->image . '" alt="' . $products['next']->name . '"></a>
               <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>
               <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['next']->price . ' LKR</span>
 
@@ -161,7 +161,7 @@ function openDialog() {
 
 <button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
        ';}} else {echo
-'<section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
+    '<section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
 <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>
 <div class="row">
   <!-- Special Offer-->
@@ -186,7 +186,7 @@ function openDialog() {
                   </div>
                 </div>
             </div>
-              <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['active']->image . '" alt="'.$products['active']->name.'"></a>
+              <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['active']->image . '" alt="' . $products['active']->name . '"></a>
               <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>
               <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['active']->price . ' LKR</span>
 
@@ -198,9 +198,10 @@ function openDialog() {
 
 <button id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
        ';}?>
-       
+
 <script>
   var v1 =  '<?=@$products["active"]->price . " LKR"?>';
+  var price = '<?=@$products["active"]->price?>';
 
   // if (1 * $('#bidPrice').val() == 0) {console.log(111);
   //   $('#bidBtn').prop('disabled', false);
@@ -208,20 +209,12 @@ function openDialog() {
 
   //bid value input validation
   $('#bidPrice').keyup(function () {
-    
+
     $('#bidVal').text(parseInt(Math.abs($(this).val())) +" LKR");
     $('#bidName').text("Your Bid - ").val();
     $('#bidVal').css({'font-weight': '550', 'color':'#20c997',}); //The specific CSS changes after the first one, are, of course, just examples.
     $('#bidName').css({'font-weight': '550', 'color':'#404040', 'font-size': '18px'});
     $('#bidBtn').prop('disabled', false);
-
-    if($(this).val() == '' || $(this).val() == 0) {
-      $('#bidName').css({'font-weight': '400', 'color':'#404040', 'font-size': '18px'});
-      $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
-      $('#bidVal').text(v1).val();
-      $('#bidName').text("Price - ").val();
-      $('#bidBtn').prop('disabled', true);
-    }
 
     // if($(this).val()%5 !== 0) {
     //   $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
@@ -231,18 +224,50 @@ function openDialog() {
     //   $('#bidBtn').prop('disabled', true);
     // }
 
+    if(1 * $(this).val() <= 1 * price ) {
+      $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
+      // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+      $('#bidVal').text('').val();
+      $('#bidName').text("Invalid bid. Your bid shoud greater than " + v1).val();
+      $('#bidBtn').prop('disabled', true);
+    }
+
+
+    if($(this).val() == '' || $(this).val() == 0) {
+      $('#bidName').css({'font-weight': '400', 'color':'#404040', 'font-size': '18px'});
+      $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+      $('#bidVal').text(v1).val();
+      $('#bidName').text("Price - ").val();
+      $('#bidBtn').prop('disabled', true);
+    }
+
   });
 
   //bid click validation
 
-  $('#bidBtn').click(function () {$('#loading-indicator').show();
+  $('#bidBtn').click(function () {
+    
     var pId = '<?=@$products['active']->id?>';
+    $('#loading-indicator').show();
+
+    if(parseInt(Math.abs($('#bidPrice').val())) <= 1 * price ) {
+      $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
+      // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
+      $('#bidVal').text('').val();
+      $('#bidName').text("Invalid bid. Your bid shoud greater than " + v1).val();
+      $('#bidBtn').prop('disabled', true);
+      $('#loading-indicator').hide();
+      return;
+    }
+
+
     if(0 == parseInt(Math.abs($('#bidPrice').val()))) {
       $('#bidName').css({'font-size': '14px', 'color': '#ff0f74'});
       // $('#bidVal').css({'color': '#e83e8c', 'font-weight': '400'});
       $('#bidVal').text('').val();
       $('#bidName').text("Invalid bid. Please place a valid amount.").val();
       $('#bidBtn').prop('disabled', true);
+      $('#loading-indicator').hide();
     } else {
       $('#bidBtn').prop('disabled', true);
       $('#bidVal').prop('disabled', true);
@@ -282,31 +307,30 @@ function openDialog() {
       </div>
     </div>
     </section>
-      
-      <?php if(@$products['queue']) {
-       echo '<h3 class="text-center mb-30">Upcoming</h3>'.
-    '<section class="hero-slider" style = "min-height: auto;">'.
-    '<div class="owl-carousel large-controls dots-inside pb-4" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 8000 }">'
+
+      <?php if (@$products['queue']) {
+    echo '<h3 class="text-center mb-30">Upcoming</h3>' .
+        '<section class="hero-slider" style = "min-height: auto;">' .
+        '<div class="owl-carousel large-controls dots-inside pb-4" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 8000 }">'
     ;
-                     
-        foreach ($products['queue'] as $q) {
-          echo
-              '<div class="col-md-3 col-sm-6 mb-30"><a class="category-card flex-wrap text-center pt-0" href="#">'.
-             '<div class="container-fluid"><span class="product-badge text-success">Queue</span>'
-                  .'  <div style = "margin-top: 3em;" class="category-card-thumb w-100"><img src="' . Url::base(true) . $q->image . '" alt="Upcoming Products"></div>'
-                  .'<div class="category-card-info w-100">'
-                  .'  <h3 class="category-card-title">' .$q->name . '</h3>'
-                  .'  <h4 class="category-card-subtitle">Starting from ' . $q->price . ' LKR</h4>'
-                  .'</div></a>'.
-                '</div>'.
-                '</div>';
-        }
 
+    foreach ($products['queue'] as $q) {
+        echo
+        '<div class="col-md-3 col-sm-6 mb-30"><a class="category-card flex-wrap text-center pt-0" href="#">' .
+        '<div class="container-fluid"><span class="product-badge text-success">Queue</span>'
+        . '  <div style = "margin-top: 3em;" class="category-card-thumb w-100"><img src="' . Url::base(true) . $q->image . '" alt="Upcoming Products"></div>'
+        . '<div class="category-card-info w-100">'
+        . '  <h3 class="category-card-title">' . $q->name . '</h3>'
+        . '  <h4 class="category-card-subtitle">Starting from ' . $q->price . ' LKR</h4>'
+            . '</div></a>' .
+            '</div>' .
+            '</div>';
+    }
 
-          echo  '</div></div>'.
-            '</section>';
-      
-      } ?>
+    echo '</div></div>' .
+        '</section>';
+
+}?>
 
 <section class="container padding-top-3x padding-bottom-3x">
       <h3 class="text-center mb-30">Past Auctions</h3>
@@ -316,8 +340,10 @@ if ($products['end']) {
     if (!@$products['end']['id']) {
         foreach ($products['end'] as $prE) {
             echo '<div class="col-md-3 col-sm-6 mb-30"><div class="category-card flex-wrap text-center pt-0">
-        <span class="product-rating text-warning"><i style = "font-size: 2em;font-weight: 600;" class="';  echo (int)$prE->winId !== 0 ? 'material-icons flight_takeoff text-danger' : 'material-icons stop'; echo '"></i></span>
-            <div style= "padding: 4%;" class="category-card-thumb w-100"><img src="' . Url::base(true) . $prE->image . '" alt="'.$prE->image.'"></div>
+        <span class="product-rating text-warning"><i style = "font-size: 2em;font-weight: 600;" class="';
+            echo (int) $prE->winId !== 0 ? 'material-icons flight_takeoff text-danger' : 'material-icons stop';
+            echo '"></i></span>
+            <div style= "padding: 4%;" class="category-card-thumb w-100"><img src="' . Url::base(true) . $prE->image . '" alt="' . $prE->image . '"></div>
             <span style = "color:#dc9814" class="product-badge btn-link-secondary">End</span>
             <div class="category-card-info w-100">
             <td>
@@ -325,24 +351,24 @@ if ($products['end']) {
               <div class="product-info">
                 <h4 class="product-title">' . $prE->name . '</h4>
                 <div class="text-lg text-medium text-muted">Started from ' . $prE->price . ' LKR</div>';
-                  if ($prE->winId == 0) {
-                    echo '
+            if ($prE->winId == 0) {
+                echo '
                   <div class="text-sm">Winner:
                   <div class="d-inline text-success"> No winner</div>
                 </div>
                 <div class="text-sm">Winning Bid:
                   <div class="d-inline text-success"> - </div>
                 </div>';
-                } else {
-                  echo '
+            } else {
+                echo '
                   <div class="text-sm">Winner:
                   <div class="d-inline text-success">' . $prE->winner . '</div>
                 </div>
                 <div class="text-sm">Winning Bid:
                   <div class="d-inline text-success">' . $prE->winner_bid . ' LKR</div>
                 </div>';
-                }
-                 echo '
+            }
+            echo '
               </div>
             </div>
           </td></div></div></div>';
@@ -364,10 +390,10 @@ if ($products['end']) {
 
 ?>
       </div>
-      <div class="text-center"><a class="btn btn-outline-secondary mb-0" href="<?=Url::to(["site/products"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Load More</a></div>
+      <div class="text-center"><a class="btn btn-outline-secondary mb-0" href="<?=Url::to(["site/products"]) . '&msisdn=' . $this->params['user']->cust->msisdn?>">Load More</a></div>
     </section>
 
-   
+
 
 
     <?php

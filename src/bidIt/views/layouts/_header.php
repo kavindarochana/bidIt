@@ -147,18 +147,7 @@ $(document).on("click", "#eee", function () {
       <nav class="site-menu">
         <ul>
           <li class="active"><a href="<?=Url::to(["site/index"]) . '&msisdn=' . $this->params['user']->cust->msisdn?>"><span>Home</span></a>
-            <ul class="sub-menu">
-              <li class="active has-children"><a href="#"><span>Hero Slider</span></a>
-                <ul class="sub-menu w-400 p-0">
-                  <li><a class="p-0" href="#"><img src="unishop/v3.0/template-2/img/banners/home01.jpg" alt="Hero Slider Home"></a></li>
-                </ul>
-              </li>
-              <li class="has-children"><a href="#"><span>Categories Grid</span></a>
-                <ul class="sub-menu w-400 p-0">
-                  <li><a class="p-0" href="#"><img src="unishop/v3.0/template-2/img/banners/home02.jpg" alt="Categories Grid Home"></a></li>
-                </ul>
-              </li>
-            </ul>
+            
           </li>
 
           <li><a href="#"><span>Account</span></a>
