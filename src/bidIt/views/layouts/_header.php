@@ -307,22 +307,20 @@ $('#sub-btn').on('click', function (event) {
 </script>
               </div>
               <div class="tab-pane fade" id="signup" role="tabpanel">
-                <form autocomplete="off" id="signup-form">
+                <form autocomplete="off" method = "POST" action = "<?=Url::to(["site/update-account"])?>" id="signup-form">
                   <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Full Name" required>
+                    <input class="form-control" name = "name" value = "<?=$this->params['user']->cust->name?>" type="text" placeholder="Full Name" required>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" type="email" placeholder="Email" required>
+                    <input class="form-control"  name = "nic" value = "<?=$this->params['user']->cust->nic?>" placeholder="NIC" required>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" type="password" placeholder="Password" required>
+                    <input class="form-control" name = "email" type="email" value = "<?=$this->params['user']->cust->email?>" placeholder="Email" required>
                   </div>
-                  <div class="form-group">
-                    <input class="form-control" type="password" placeholder="Confirm Password" required>
-                  </div>
-                  <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
-                  <p class="text-muted text-sm mt-4">OR sign up with your social account</p><a class="media-btn media-facebook" href="#"><i class="socicon-facebook"></i><span>Signup with Facebook</span></a><a class="media-btn media-google" href="#"><i class="socicon-googleplus"></i><span>Signup with Google+</span></a><a class="media-btn media-twitter" href="#"><i class="socicon-twitter"></i><span>Signup with Twitter</span></a>
-                </form>
+                  
+                  <input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+                  <button class="btn btn-primary btn-block" type="submit">Update Account</button>
+                  </form>
               </div>
             </div>
           </div>

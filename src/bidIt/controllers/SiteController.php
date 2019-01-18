@@ -313,7 +313,7 @@ class SiteController extends Controller
             return $this->render('index', ['products' => $this->view->params['products'], 'message' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
         }
 
-        $sub = $this->subUser(1,1);
+        $sub = $this->subUser(1, 1);
 
         if (1 * $sub !== 1) {
             $msg = ['error', 'Error'];
@@ -342,11 +342,11 @@ class SiteController extends Controller
         if (!$msisdn) {
             $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
         }
-        
+
         if (!in_array(substr($msisdn, -9, -7), Yii::$app->params['msisdn_prefix'])) {
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
-        
+
         // if (!Yii::$app->session->get('user')) {
         //     $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
         // } else {
@@ -354,11 +354,11 @@ class SiteController extends Controller
         // }
 
         $subscriber = Subscriber::findOne(['msisdn' => @$msisdn]);
-        
+
         if (!$subscriber) {
             $this->initialReg($msisdn);
         }
-        
+
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
             $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `create_ts` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . " ORDER BY id'")->limit(26)->all();
@@ -378,13 +378,13 @@ class SiteController extends Controller
                 a.winner_id = b.id AND a.status = 3 order by id DESC limit 5';
 
             foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
-                $product['end'][] = (object)$q;
+                $product['end'][] = (object) $q;
             }
 //Todo Chang active
             if (!@$product['active'] && @$product['queue'][0]) {
                 $product['next'] = $product['queue'][0];
                 array_shift($product['queue']);
-            } 
+            }
 
             $packages = BidPackages::find(['status = 1'])->all();
             $this->view->params['user'] = $user;
@@ -405,7 +405,7 @@ class SiteController extends Controller
         $pack = BidPackages::findOne(['id' => @$_REQUEST['pack'], 'status' => 1]);
         $wallet = $this->view->params['user'];
         $status = $this->subStatus();
-        
+
         if (@$status[2] == 100) {
             Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($status), 2);
             return $this->render('index', ['products' => $this->view->params['products'], 'error' => ['error', $status['1']], 'balance' => $this->view->params['user']->bid_balance]);
@@ -500,8 +500,33 @@ class SiteController extends Controller
             audit_log($msisdn, 'initial_registration_wallet', 'not_ok', 'Error ' . json_encode(@$c->getErrors()));
             throw new HttpException(500, 'Your regisraion process faced some issue . You have to contact customer care for complete your process. Don\'t to be late. Today is your lucky day. Please complete your registration.');
         }
-        audit_log($msisdn, 'initial_registration_wallet', 'ok', "success - wallet - $c->id " );
+        audit_log($msisdn, 'initial_registration_wallet', 'ok', "success - wallet - $c->id ");
 
+    }
+
+    public function actionUpdateAccount()
+    {
+        $user = $this->authRequest(Yii::$app->session->get('user')['cust']['msisdn']);
+        $id = Yii::$app->session->get('user')['cust']['id'];
+        $usr = Subscriber::findOne($id);
+
+        $usr->name = $_REQUEST['name'];
+        $usr->email = $_REQUEST['email'];
+        $usr->nic = $_REQUEST['nic'];
+
+        if($usr->save()){
+            $msg = ['success', 'Successfully profile data updated.'];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+            $this->authRequest();
+            return $this->render('index', ['products' => $this->view->params['products'], 'error' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
+
+        } else {
+            $msg = ['error', 'Can not update profile data right now.'];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+
+            return $this->render('index', ['products' => $this->view->params['products'], 'error' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
+
+        }
     }
 
     public function actionUpdateProductStatus()
@@ -587,8 +612,16 @@ class SiteController extends Controller
         // }
 
         $product = BidProduct::findOne($pId);
-        
-        if($product->end_date < date('Y-m-d H:i:s')) {
+
+        if (1 * $product->price >= $bidVal) {
+            $msg = ['alert', "Invalid bid. Your bid shoud greater than $product->price LKR."];
+            Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
+
+            return $this->render('index', ['products' => $this->view->params['products'], 'error' => $msg, 'balance' => $this->view->params['user']->bid_balance]);
+
+        }
+
+        if ($product->end_date < date('Y-m-d H:i:s')) {
             $msg = ['alert', 'This auction is expired.'];
             Yii::$app->cache->set($user->cust->id . 'notice_message', json_encode($msg), 2);
 
@@ -684,7 +717,6 @@ class SiteController extends Controller
 
     }
 
-
     public function actionProducts()
     {
         $user = $this->authRequest();
@@ -694,13 +726,12 @@ class SiteController extends Controller
         $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.id as winId, b.msisdn,b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
                 a.winner_id = b.id and a.status = 3 order by id DESC limit 26';
 
-            foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
-               $out[] = (object)$q;
-            }
+        foreach (Yii::$app->db->createCommand($q)->queryAll() as $q) {
+            $out[] = (object) $q;
+        }
 
         return $this->render('products', ['list' => $out]);
     }
-
 
     public function actionProduct()
     {
@@ -711,8 +742,6 @@ class SiteController extends Controller
         }
         return $this->render('product', ['data' => $product]);
     }
-
-
 
     private function subUser($msisdn, $pack)
     {

@@ -11,6 +11,7 @@ use Yii;
  * @property string $msisdn
  * @property string $nic
  * @property string $name
+ * @property string $email
  * @property int $status
  * @property int $chanel 1=web, 2=ussd, 3=sms, 4 = mobile app, 5 = unknown
  * @property string $propic
@@ -40,6 +41,7 @@ class Subscriber extends \yii\db\ActiveRecord
             [['create_ts', 'update_ts'], 'safe'],
             [['msisdn'], 'string', 'max' => 15],
             [['nic'], 'string', 'max' => 12],
+            [['email'], 'string', 'max' => 60],
             [['name'], 'string', 'max' => 100],
             [['propic'], 'string', 'max' => 140],
         ];
@@ -55,6 +57,7 @@ class Subscriber extends \yii\db\ActiveRecord
             'msisdn' => 'Msisdn',
             'nic' => 'Nic',
             'name' => 'Name',
+            'email' => 'Email',
             'status' => 'Status',
             'chanel' => 'Chanel',
             'propic' => 'Propic',
