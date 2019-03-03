@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 $this->title = 'BidIt';
 
@@ -120,6 +121,29 @@ function openDialog() {
   </div>
 </div> -->
 
+<!-- Sub list if not sub-->
+<?php
+$user = $this->params['user'];
+if (($user->daily_bid_balance + $user->bid_balance) == 0 && $user->daily_bid_balance_stauts == 0) {
+  echo '
+<section class="container padding-top-2x padding-bottom-3x">  
+<div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-danger text-sm"><strong>Your Subscription has been ended. Please subscribe.</strong></h5>
+              <p class="card-text"><h5 class= "text-sm">Subscribe for:</h5>
+<select class="form-control" id="select-input">
+  <option value = "0">Choose Pack...</option>
+  <option value = "1">Daily - 5 LKR - 3bids</option>
+  <option value = "2">Weekly  - 10 LKR - 7bids</option>
+  <option value = "3">Monthly - 15 LKR - 12bids</option>
+</select><a  id= "sub-btn" class = "btn btn-pill btn-sm btn-success">Subscribe</a> </p>
+            </div>
+          </div>
+
+
+ </section>
+';}
+?>
 
 
         <?php if (!@$products['active']) {
@@ -246,7 +270,7 @@ function openDialog() {
   //bid click validation
 
   $('#bidBtn').click(function () {
-    
+
     var pId = '<?=@$products['active']->id?>';
     $('#loading-indicator').show();
 
