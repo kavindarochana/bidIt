@@ -21,7 +21,7 @@ use app\controllers\BidAuthController;
 class BidAuthController extends Controller
 {
 
-    public static function authRequest()
+    public function authRequest()
     {
         $msisdn = 94717071207;
         $subscriber = Subscriber::findOne(['msisdn' => $msisdn]);

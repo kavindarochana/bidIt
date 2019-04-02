@@ -361,7 +361,7 @@ class SiteController extends Controller
 
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
-            $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `create_ts` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . " ORDER BY id'")->limit(26)->all();
+            $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `start_date` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . " ORDER BY id'")->limit(26)->all();
             $product = [];
             foreach ($prd as $p) {
                 if ($p['status'] == 1) {
@@ -577,7 +577,8 @@ class SiteController extends Controller
                 'name' => $o['name'],
                 'price' => $o['price'],
                 'bid_value' => $o['bid_value'],
-                'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' : $o['bid_value'] . '*' . $o['price'] . ' = ' . $o['bid_value'] * $o['price'] . 'pts',
+                // 'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' : $o['bid_value'] . '*' . $o['price'] . ' = ' . $o['bid_value'] * $o['price'] . 'pts',
+                'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' :  $o['bid_value'] . 'LKR',
                 'type' => $o['type'],
             ];
         }
@@ -588,7 +589,8 @@ class SiteController extends Controller
                 'name' => $o['name'],
                 'price' => $o['price'],
                 'bid_value' => $o['bid_value'],
-                'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' : $o['bid_value'] . '*' . $o['price'] . ' = ' . $o['bid_value'] * $o['price'] . 'pts',
+                //'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' : $o['bid_value'] . '*' . $o['price'] . ' = ' . $o['bid_value'] * $o['price'] . 'pts',
+                'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' :  $o['bid_value'] . 'LKR',
                 'type' => $o['type'],
             ];
         }
