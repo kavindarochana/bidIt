@@ -3,8 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=BidIt',
-    'username' => 'root',
-    'password' => 'war369',
+    'username' => 'kash',
+    'password' => 'kash',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
