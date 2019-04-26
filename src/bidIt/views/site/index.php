@@ -218,9 +218,9 @@ if (($user->daily_bid_balance + $user->bid_balance) == 0 && $user->daily_bid_bal
               <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
                 <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
                 <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
-<input style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+<input disabled = "true" style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
 
-<button id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
+<button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
        ';}?>
 
 <script>

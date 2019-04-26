@@ -95,7 +95,7 @@ class SiteController extends Controller
                     'transid' => date('ymdhis').rand(000,999),
                     'operation' => 'get_charging_log',
                     'msisdn' => $msisdn,
-                    'productcode' => '2001',
+                    'productcode' => '1885',
                     'fromdate' => $fromdate,
                     'todate' => $todate,
                 ];

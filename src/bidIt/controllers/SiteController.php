@@ -362,6 +362,7 @@ class SiteController extends Controller
         if ($subscriber = Subscriber::findOne(['msisdn' => @$msisdn])) {
             $user = Wallet::findOne(['cust_id' => $subscriber->id]);
             $prd = BidProduct::find()->where("`status` != 2 and `status` != 3 and `start_date` >= '" . date('Y-m-d H:i:s', strtotime('-16 days')) . " ORDER BY id'")->limit(26)->all();
+           
             $product = [];
             foreach ($prd as $p) {
                 if ($p['status'] == 1) {
@@ -373,7 +374,7 @@ class SiteController extends Controller
                     continue;
                 }
             }
-
+            
             $q = 'SELECT a.id,a.name, a.image,a.description,a.image,a.price,a.winner_bid,a.start_date,a.end_date,a.winner_id,a.status,a.create_ts,a.update_ts,b.msisdn, b.id as winId, b.name as winner FROM `tbl_bid_product` a, tbl_bid_subscriber b WHERE
                 a.winner_id = b.id AND a.status = 3 order by id DESC limit 5';
 
@@ -381,6 +382,7 @@ class SiteController extends Controller
                 $product['end'][] = (object) $q;
             }
 //Todo Chang active
+
             if (!@$product['active'] && @$product['queue'][0]) {
                 $product['next'] = $product['queue'][0];
                 array_shift($product['queue']);
