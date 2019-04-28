@@ -30,7 +30,7 @@ $this->title = 'My Yii Application';
             <div class="col-lg-6">
             <h4 style="color:green">Charging History</h4>
             <form action="#" method="get">
-           <input placeholder="Msisdn" name="q"> <input type="date" name="fromdate"/> - <input type="date" name="todate"/>
+           <input placeholder="MSISDN" name="q"> <input type="date" name="fromdate"/> - <input type="date" name="todate"/>
            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
            </form>
