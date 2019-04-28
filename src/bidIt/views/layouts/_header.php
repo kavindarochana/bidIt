@@ -161,7 +161,7 @@ $(document).on("click", "#eee", function () {
 
         </ul>
       </nav>
-      <!-- Toolbar-- <$this->params['user']->bid_balance+$this->params['user']->daily_bid_balance;>
+      <!-- Toolbar-- $this->params['user']->bid_balance+$this->params['user']->daily_bid_balance;>-->
       <div class="toolbar">
         <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span style = "display: table; border-radius: 39%; right: -12px;" class="count"></span></i></a></div>
         <!-- Toolbar Dropdown-->
