@@ -175,16 +175,17 @@ if (($user->daily_bid_balance + $user->bid_balance) == 0 && $user->daily_bid_bal
             </div>
               <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['next']->image . '" alt="' . $products['next']->name . '"></a>
               <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>
-              <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['next']->price . ' LKR</span>
+              './/<span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['next']->price . ' LKR</span>
 
 
-              <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
+              '<div style = "margin-left: 14%; margin-top: 10px;" class = "row">
                 <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
                 <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
-<input disabled = "true" style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "2" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+'//<input disabled = "true" style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "2" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
 
-<button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
-       ';}} else {echo
+//<button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
+//removed ' add ' before ;       
+;}} else {echo
     '<section style = "margin-bottom: -45px; border-bottom: 0px solid #eaeaea;" class="container-fluid padding-top-1x pb-5 widget widget-colors">
 <h3 style = "margin-bottom: 15px !important;" class="text-center mb-30">Live Auction</h3>
 <div class="row">
@@ -211,17 +212,17 @@ if (($user->daily_bid_balance + $user->bid_balance) == 0 && $user->daily_bid_bal
                 </div>
             </div>
               <a class="d-inline-block" href="#"><img style = "max-width:100%;" src="' . Url::base(true) . $products['active']->image . '" alt="' . $products['active']->name . '"></a>
-              <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>
-              <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['active']->price . ' LKR</span>
+              <h3 style = "margin-bottom: 10px;" class="h5 text-normal pt-2"><a class="navi-link" href="#"></a></h3>'.
+            //  <span id = "bidName" class ="h5 mb-30">Price - </span> <span style = "color:#e83e8c" id = "bidVal" class="h5"> ' . $products['active']->price . ' LKR</span>
 
 
-              <div style = "margin-left: 14%; margin-top: 10px;" class = "row">
+             '<div style = "margin-left: 14%; margin-top: 10px;" class = "row">
                 <!-- <input style = "width:180px;" class="form-control form-control-pill form-control-sm" type="text" id="bidPrice" placeholder="Place your bid"> -->
                 <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
-<input disabled = "true" style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
+'//<input disabled = "true" style = "width:180px;" type = "number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" class="form-control form-control-pill form-control-sm"  id="bidPrice" placeholder="Place your bid">
 
-<button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
-       ';}?>
+//<button disabled = "true" id = "bidBtn" style = "margin-top: 0px; margin-bottom:0px" class="btn btn-pill btn-success btn-sm btn-secondary" type="button">Bid</button>
+       ;}?>
 
 <script>
   var v1 =  '<?=@$products["active"]->price . " LKR"?>';

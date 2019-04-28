@@ -154,7 +154,8 @@ $(document).on("click", "#eee", function () {
             <ul class="sub-menu">
       
                 <li><a href="<?=Url::to(["site/history"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Bid History</a></li>
-               
+                <li><a href="<?=Url::to(["site/charging"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Charging History</a></li>
+                
             </ul>
           </li>
 
@@ -181,6 +182,7 @@ $(document).on("click", "#eee", function () {
                 <li class="has-children"><span><a href="#"><span>Account</span></a><span class="sub-menu-toggle"></span></span>
                   <ul class="slideable-submenu">
                       <li><a href="<?=Url::to(["site/history"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Bid History</a></li>
+                      <li><a href="<?=Url::to(["site/charging"]).'&msisdn='.$this->params['user']->cust->msisdn?>">Charging History</a></li>
                       
                   </ul>
                 </li>
@@ -254,15 +256,16 @@ $(document).on("click", "#eee", function () {
                       <li><strong>NIC:</strong>  <?=@$this->params['user']->cust->nic;?></li>
                
                       <li><strong>Balance:</strong>  <?=@$this->params['user']->bid_balance + @$this->params['user']->daily_bid_balance;?> bids</li>
-                      <li><strong>Status:</strong>  <?=@$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
-    ['site/unsubscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
-'<span class="text-danger">Unsubscribe</span>
-<select class="form-control" id="select-input">
-  <option value = "0">Choose Pack...</option>
-  <option value = "1">Daily - 5 LKR - 3bids</option>
-  <option value = "2">Weekly  - 10 LKR - 7bids</option>
-  <option value = "3">Monthly - 15 LKR - 12bids</option>
-</select><a  id= "sub-btn" class = "btn btn-pill btn-sm btn-success">Activate</a>'?> </li>
+                    <!--  <li><strong>Status:</strong>  <add php ?=//@$this->params['user']->cust->status == 1 ? '<span class="text-success">Subscribed</span> ' . Html::a('Deactivate',
+    // ['site/unsubscribe', 'uid' => @$this->params['user']->cust->id, 'msisdn' => @$this->params['user']->cust->msisdn], ['class' => 'text-danger']) :
+// '<span class="text-danger">Unsubscribe</span>
+// <select class="form-control" id="select-input">
+//   <option value = "0">Choose Pack...</option>
+//   <option value = "1">Daily - 5 LKR - 3bids</option>
+//   <option value = "2">Weekly  - 10 LKR - 7bids</option>
+//   <option value = "3">Monthly - 15 LKR - 12bids</option>
+// </select><a  id= "sub-btn" class = "btn btn-pill btn-sm btn-success">Activate</a>'?> </li>-->
+                      <li><strong>STATUS:</strong>  <?=@$this->params['userStatus'];?></li>
                   </ul>
                     <img src="bid/data/images/img/ajax-loader.gif" id="loading-indicator-sub" style="display:none; width:40px;height:40px;position: absolute;left: 40%; z-index: 2;" />
                   </div>
@@ -342,21 +345,22 @@ $('#sub-btn').on('click', function (event) {
                 <tbody>
                 <?php
                 $packs = $this->params['packs'];
-                foreach($packs as $p) {
-                  echo '<tr>
-                        <td>
-                            <div class="product-item"><a class="product-thumb" href=""><img src="'.Url::base(true).$p->image.'" alt="Package"></a>
-                              <div class="product-info">
-                              <h4 class="product-title"><a id= "eee" data-price = "'.$p->price.'" data-qty = "'.$p->bids.'" data-name = "'.$p->name.'" data-validity = "-" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
-                              <div class="text-sm">Availability:
-                                <div class="d-inline text-success">In Stock</div>
-                              </div>
-                            </div>
-                            </div>
-                        </td>
-                        <td class="text-center"><a id= "eee" data-price = "'.$p->price.'" data-qty = "'.$p->bids.'" data-name = "'.$p->name.'" data-validity = "-" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage" class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
-                      </tr>';
-                }?>
+                // foreach($packs as $p) {
+                //   echo '<tr>
+                //         <td>
+                //             <div class="product-item"><a class="product-thumb" href=""><img src="'.Url::base(true).$p->image.'" alt="Package"></a>
+                //               <div class="product-info">
+                //               <h4 class="product-title"><a id= "eee" data-price = "'.$p->price.'" data-qty = "'.$p->bids.'" data-name = "'.$p->name.'" data-validity = "-" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage">'. $p->name .'</a></h4><span><em>Price:</em> '.$p->price.' LKR</span><span><em>Bids:</em> '.$p->bids.'</span>
+                //               <div class="text-sm">Availability:
+                //                 <div class="d-inline text-success">In Stock</div>
+                //               </div>
+                //             </div>
+                //             </div>
+                //         </td>
+                //         <td class="text-center"><a id= "eee" data-price = "'.$p->price.'" data-qty = "'.$p->bids.'" data-name = "'.$p->name.'" data-validity = "-" data-pack="' . $p->id . '" data-id ="'.Url::base(true).$p->image.'" data-toggle="modal" data-id="" href="#gardenImage" class="remove-from-cart" href="#"><i class="material-icons arrow_forward"></i></a></td>
+                //       </tr>';
+                // }
+                ?>
                 </tbody>
               </table>
             </div>

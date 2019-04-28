@@ -61,7 +61,6 @@ function query_log()
 {
     $csv_line = func_get_args();
     $date = date('Y/m/d H:i:s');
-    
 
     array_unshift($csv_line, $date);
 
@@ -72,7 +71,6 @@ function query_log()
     @file_put_contents($log_file, "$data\n", FILE_APPEND);
 
 }
-
 
 function wallet_log()
 {
@@ -87,4 +85,18 @@ function wallet_log()
 
     @file_put_contents($log_file, "$data\n", FILE_APPEND);
 
+}
+
+function timeInterval($startTime, $endDate)
+{
+    $diff = $endDate - $startTime;
+    $final = (round($diff, 2, PHP_ROUND_HALF_DOWN));
+
+    // Break the difference into seconds and microseconds
+    //$sec = intval($diff);
+    //$micro = $diff - $sec;
+    // $final will contain something like "00:00:02.452"
+    //$final = strftime('%T', mktime(0, 0, $sec)) . str_replace('0.', '.', sprintf('%.3f', $micro));
+
+    return $final;
 }

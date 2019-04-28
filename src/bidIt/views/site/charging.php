@@ -10,7 +10,7 @@ use yii\bootstrap\ActiveForm;
 echo '
 <div class="page-title">
       <div class="container">
-        <h1>Bid History</h1>
+        <h1>Charging History</h1>
         
       </div>
     </div>
@@ -37,9 +37,11 @@ echo '
                echo ' <tr>
                   <td class="align-middle"><a class="text-medium navi-link" href="#" data-toggle="modal" data-target="#orderDetails">'.$i['name'].'</a></td>
                   <td class="align-middle">'. $i['date']. '</td>
-                  <td class="align-middle"> 
-                  <span style = "border-radius: 10px;" class="dd-inline-block bg-warning text-white text-xs p-1"> Bid</span>
-                  </td>
+                  <td class="align-middle"> ' ;
+                  echo  $i['type'] == 'topUp' ? '<span style = "border-radius: 10px;" class="dd-inline-block bg-info text-white text-xs p-1">Topup</span>' 
+                  : '<span style = "border-radius: 10px;" class="dd-inline-block bg-warning text-white text-xs p-1">Subscription</span>';
+                  
+                  echo '</td>
                   <td class="align-middle"><span class="text-medium">' . $i['value'] . '</span></td>
                   <td class="align-middle"><span class="text-medium">' . $i['channel'] . '</span></td>
                   <td class="align-middle"><span class="text-medium">' . $i['status'] . '</span></td>

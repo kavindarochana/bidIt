@@ -390,6 +390,7 @@ class SiteController extends Controller
 
             $packages = BidPackages::find(['status = 1'])->all();
             $this->view->params['user'] = $user;
+            $this->view->params['userStatus'] = $this->getUserStatus($msisdn);
             $this->view->params['products'] = $product;
             $this->view->params['packs'] = $packages;
             Yii::$app->session->set('user', $user);
@@ -565,7 +566,7 @@ class SiteController extends Controller
         //     left outer join tbl_bid_product c on c.id = a.product_id and a.type = 2
         //     ORDER by a.id desc limit 30";
 
-        $q1 = "SELECT a.id, a.msisdn, a.bid_value, a.wallet_id, a.type, a.customer_id, a.balance, a.create_ts, b.name, b.price from
+        /*$q1 = "SELECT a.id, a.msisdn, a.bid_value, a.wallet_id, a.type, a.customer_id, a.balance, a.create_ts, b.name, b.price from
             tbl_bid_bid_transaction a,tbl_bid_product b where
             a.product_id = b.id and a.type = 2 and a.wallet_id = $user->id ORDER by a.id desc limit 30";
 
@@ -595,9 +596,61 @@ class SiteController extends Controller
                 'bid_price' => $o['type'] == 1 ? $o['price'] . 'LKR' :  $o['bid_value'] . 'LKR',
                 'type' => $o['type'],
             ];
+        }*/
+        $payload = [
+            'username' => 'mybids',
+            'password' => 'SammyBird66',
+            'msisdn' => substr(Yii::$app->session->get('user')['cust']['msisdn'], -9)
+        ];
+        
+        $url = 'http://localhost:8085/api/v1/bidHistory';
+        $a = json_decode($this->getData($url, $payload, 'bid_history'), true);
+        
+        if(@$a['response']) {
+            foreach(@$a['response'] as $r){
+                $out []= [
+                    'date' => date('Y-m-d H:i:s', strtotime(@$r['time'])),
+                    'name' => @$r['productId'],
+                    'type' => @$r['productTypt'],
+                    'value' => @$r['value'],
+                    'channel' => @$r['channel'],
+                    'status' => @$r['status']
+
+                ];
+            }
         }
-        arsort($out);
+        
         return $this->render('history', ['data' => $out]);
+    }
+
+    public function actionCharging()
+    {
+        $user = $this->authRequest();
+
+        $out = [];
+        $payload = [
+            'username' => 'mybids',
+            'password' => 'SammyBird66',
+            'msisdn' => substr(Yii::$app->session->get('user')['cust']['msisdn'], -9)
+        ];
+        
+        $url = 'http://localhost:8085/api/v1/chargedHistory';
+        $a = json_decode($this->getData($url, $payload, 'charged_history'), true);
+        
+        if(@$a['response']) {
+            foreach(@$a['response'] as $r){
+                $out []= [
+                    'date' => date('Y-m-d H:i:s', strtotime(@$r['time'])),
+                    'name' => @$r['productId'],
+                    'type' => @$r['productTypt'],
+                    'value' => @$r['value'],
+                    'channel' => @$r['channel'],
+                    'status' => @$r['status']
+
+                ];
+            }
+        }
+        return $this->render('charging', ['data' => $out]);
     }
 
     public function actionBidNow()
@@ -752,5 +805,50 @@ class SiteController extends Controller
         //TODO api call
 
         return true;
+    }
+
+    private function getData($url, $payload, $apiname = 'api') {
+
+        $ch = curl_init( $url );
+        # Setup request to send json via POST.
+        $payload = json_encode($payload);
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        # Return response instead of printing.
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        # Send request.
+        $start = microtime(true);
+        api_log($apiname, $url, 1, $payload, '-');
+        $result = curl_exec($ch);
+        api_log($apiname, $url, 2, $result, timeInterval($start, microtime(true)));
+        curl_close($ch);
+        return $result;
+    }
+
+    private function getUserStatus($msisdn) {
+        
+        $url = 'http://localhost:8082/api/v1/smp';
+        
+        $payloadHistory = [
+            'userid' => 'mybids',
+            'password' => 'SammyBird66',
+            'transid' => date('ymdhis').rand(000,999),
+            'operation' => 'get_product_status',
+            'msisdn' => substr($msisdn, -9),
+            'productcode' => '1885',
+            
+        ];
+
+        $a = json_decode($this->getData($url, $payloadHistory, 'get_product_status'), true);
+   
+        if(@$a['response']['result']) {
+            foreach($a['response']['result'] as $r){
+                if($r['productcode'] == 1885) {
+                    return $r['status'];
+                }
+            }
+        } else {
+            return 'error';
+        }
     }
 }
