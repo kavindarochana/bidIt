@@ -138,10 +138,7 @@ $(document).on("click", "#eee", function () {
     <header class="navbar navbar-sticky">
       <!-- Site Branding-->
       <div class="site-branding"><a class="site-logo hidden-xs-down" href="<?=Url::to(["site/index"]) .'&msisdn='. $this->params['user']->cust->msisdn ?>"><img src="unishop/v3.0/template-2/img/logo/logo.png" alt="Unishop"></a><a class="site-logo logo-sm hidden-sm-up" href="<?=Url::to(["site/index"]).'&msisdn='.$this->params['user']->cust->msisdn?>"><img style = "max-width: 120px; max-height: 36px;" src="unishop/v3.0/template-2/img/logo/logo-sm.png" alt="Unishop"></a>
-        <div class="lang-currency-switcher">
-          <div class="lang-currency-toggle"><img src="unishop/v3.0/template-2/img/flags/GB.png" alt="English"><span>USD</span><i class="material-icons arrow_drop_down"></i>
-          </div>
-        </div>
+        
       </div>
       <!-- Main Navigation-->
       <nav class="site-menu">
