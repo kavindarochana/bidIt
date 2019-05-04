@@ -163,8 +163,10 @@ $(document).on("click", "#eee", function () {
       </nav>
       <!-- Toolbar-- $this->params['user']->bid_balance+$this->params['user']->daily_bid_balance;>-->
       <div class="toolbar">
-        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle search-toggle" href="#search"><i class="material-icons search"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a><a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span style = "display: table; border-radius: 39%; right: -12px;" class="count"></span></i></a></div>
+        <div class="inner"><a class="toolbar-toggle mobile-menu-toggle" href="#mobileMenu"><i class="material-icons menu"></i></a><a class="toolbar-toggle" href="#account"><i class="material-icons person"></i></a></div>
         <!-- Toolbar Dropdown-->
+
+        <!-- <a class="toolbar-toggle" href="#cart"><i><span class="material-icons shopping_basket"></span><span style = "display: table; border-radius: 39%; right: -12px;" class="count"></span></i></a> -->
         <div class="toolbar-dropdown">
           <!-- Mobile Menu Section-->
           <div class="toolbar-section" id="mobileMenu">
@@ -189,55 +191,7 @@ $(document).on("click", "#eee", function () {
               </ul>
             </nav>
           </div>
-          <!-- Search Section-->
-          <div class="toolbar-section" id="search">
-            <form class="search-form mb-2" method="get">
-              <input type="search" placeholder="Type search query"><i class="material-icons search"></i>
-            </form>
-            <!-- Products-->
-            <div class="widget widget-featured-products">
-              <h3 class="widget-title">Found in Products</h3>
-              <!-- Entry-->
-              <div class="entry">
-                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/shop/widget/01.png" alt="Product"></a></div>
-                <div class="entry-content">
-                  <h4 class="entry-title"><a href="#">Max <span class='text-highlighted'>Task Chair</span></a></h4><span class="entry-meta">299.00LKR</span>
-                </div>
-              </div>
-              <!-- Entry-->
-              <div class="entry">
-                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/shop/widget/02.png" alt="Product"></a></div>
-                <div class="entry-content">
-                  <h4 class="entry-title"><a href="#"><span class='text-highlighted'>Drawer</span> File Cabinet</a></h4><span class="entry-meta">265.00LKR</span>
-                </div>
-              </div>
-              <!-- Entry-->
-              <div class="entry">
-                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/shop/widget/03.png" alt="Product"></a></div>
-                <div class="entry-content">
-                  <h4 class="entry-title"><a href="#">Campfire <span class='text-highlighted'>Paper</span> Table</a></h4><span class="entry-meta">570.00LKR</span>
-                </div>
-              </div>
-            </div>
-            <!-- Blog-->
-            <div class="widget widget-featured-products">
-              <h3 class="widget-title">Found in Blog</h3>
-              <!-- Entry-->
-              <div class="entry">
-                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/blog/widget/01.jpg" alt="Post"></a></div>
-                <div class="entry-content">
-                  <h4 class="entry-title"><a href="#"><span class='text-highlighted'>Modern</span> Working Space</a></h4><span class="entry-meta">May 09</span>
-                </div>
-              </div>
-              <!-- Entry-->
-              <div class="entry">
-                <div class="entry-thumb"><a href="#"><img src="unishop/v3.0/template-2/img/blog/widget/02.jpg" alt="Post"></a></div>
-                <div class="entry-content">
-                  <h4 class="entry-title"><a href="#">Interior <span class='text-highlighted'>Design</span> Tricks</a></h4><span class="entry-meta">April 18</span>
-                </div>
-              </div>
-            </div>
-          </div>
+         
           <!-- Account Section-->
           <div class="toolbar-section" id="account">
             <ul class="nav nav-tabs nav-justified" role="tablist">

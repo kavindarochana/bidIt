@@ -340,7 +340,7 @@ class SiteController extends Controller
     private function authRequest($msisdn = null)
     {
         if (!$msisdn) {
-            $msisdn = @$_REQUEST['msisdn'] == null ? @$this->view->params['user']->cust->msisdn : $_REQUEST['msisdn'];
+            $msisdn = @apache_request_headers()['msisdn'] ? apache_request_headers()['msisdn'] : @$this->view->params['user']->cust->msisdn;
         }
 
         if (!in_array(substr($msisdn, -9, -7), Yii::$app->params['msisdn_prefix'])) {
